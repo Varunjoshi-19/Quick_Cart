@@ -1,0 +1,70 @@
+.card {
+    position: absolute;
+    top: 50px; /* adjust based on profile icon */
+    right: 10px;
+    width: 250px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 1000;
+  
+    /* jin effect */
+    transform: scale(0.8);
+    opacity: 0;
+    animation: popIn 0.25s ease forwards;
+  }
+  
+  @keyframes popIn {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #6b46c1; /* purple tone */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .email {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #333;
+    transition: background 0.2s;
+  }
+  
+  .item:hover {
+    background: #f5f5f5;
+  }
+  

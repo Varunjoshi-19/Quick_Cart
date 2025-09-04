@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dynamic Product Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Labels & Inputs */
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .checkbox-group div,
+        .radio-group div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .custom-btn {
+            cursor: pointer;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .custom-btn:hover {
+            background: #0056b3;
+        }
+
+        .submit-btn {
+            margin-top: 10px;
+        }
+
+        .dynamic-fields {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+            color: #007bff;
+        }
+
+        .modal button {
+            margin-top: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Dynamic Product Input Form</h2>
+
+    <form id="productForm">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option value="">Select Category</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Footwear">Footwear</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Bags">Bags</option>
+            <option value="Wellness">Wellness</option>
+        </select>
+
+        <label>Brand</label><input type="text" name="brand" required />
+        <label>Product Name</label><input type="text" name="name" required />
+        <label>Type of Product</label><input type="text" name="typeOfProduct" />
+        <label>Discount (%)</label><input type="number" name="discount" min="0" />
+        <label>Actual Price</label><input type="number" name="actualPrice" min="0" required />
+        <label>Discounted Price</label><input type="number" name="discountedPrice" min="0" />
+        <label>In Stock</label><input type="checkbox" name="inStock" />
+        <label>Description</label><textarea name="description"></textarea>
+        <label>Reviews (number)</label><input type="number" value="0" name="reviews" min="0" />
+        <label>Rating (number)</label><input type="number" name="rating" min="1" max="5" />
+        <label>Product Image</label><input type="file" name="productImage" accept="image/*" />
+        <label>Related Images</label><input type="file" name="relatedPics" accept="image/*" multiple />
+        <label>Buy Quantity</label><input type="number" value="0" name="buyQuantity" min="0" />
+
+        <div id="categoryFields" class="dynamic-fields"></div>
+
+        <div id="customFields" class="dynamic-fields">
+            <h3>Custom Fields</h3>
+            <button type="button" class="custom-btn" onclick="addCustomField()">Add Custom Field</button>
+        </div>
+
+        <button type="button" class="custom-btn" id="fillBtn">Fill Automatically</button>
+        <button type="submit" class="custom-btn submit-btn">Submit</button>
+    </form>
+
+    <div class="modal-bg" id="modalBg">
+        <div class="modal">
+            <h3>Form Submitted!</h3>
+            <pre id="jsonOutput" style="text-align:left; max-height:200px; overflow:auto;"></pre>
+            <button class="custom-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const categoryFields = document.getElementById('categoryFields');
+        const categorySelect = document.getElementById('category');
+
+        categorySelect.addEventListener('change', () => renderCategoryFields(categorySelect.value));
+
+        function renderCategoryFields(category) {
+            categoryFields.innerHTML = '';
+            if (!category) return;
+
+            const fields = {
+                Electronics: [
+                    { label: 'RAM', type: 'checkbox', name: 'ram', options: ['4GB', '6GB', '12GB', '16GB', '32GB', '64GB'], allowCustom: true },
+                    { label: 'Color', type: 'checkbox', name: 'color', options: ['Red', 'Blue', 'Black', "Green", "Purple"], allowCustom: true },
+                    { label: 'STORAGE', type: 'checkbox', name: 'storage', options: ['32GB', '64GB', '128GB', '256GB', '512GB', '1TB'], allowCustom: true },
+                ],
+                Fashion: [
+                    { label: 'Material', type: 'text', name: 'material' },
+                    { label: 'Gender', type: 'radio', name: 'gender', options: ['Male', 'Female', 'Unisex'] },
+                    { label: 'Pattern', type: 'text', name: 'pattern' },
+                    { label: 'Fit', type: 'select', name: 'fit', options: ['Slim', 'Regular', 'Loose'] }
+                ],
+                Footwear: [
+                    { label: 'Size', type: 'number', name: 'size' },
+                    { label: 'Material', type: 'text', name: 'material' },
+                    { label: 'Color', type: 'checkbox', name: 'color', options: ['Red', 'Blue', 'Black'], allowCustom: true },
+                    { label: 'Type', type: 'select', name: 'type', options: ['Casual', 'Sports', 'Formal', 'Sandals'] }
+                ],
+                Beauty: [
+                    { label: 'Skin Type', type: 'select', name: 'skinType', options: ['Oily', 'Dry', 'Normal', 'Combination'] },
+                    { label: 'Ingredients', type: 'textarea', name: 'ingredients' },
+                    { label: 'Product Form', type: 'radio', name: 'productForm', options: ['Cream', 'Liquid', 'Powder', 'Gel'] },
+                    { label: 'Expiry Date', type: 'date', name: 'expiryDate' }
+                ],
+                Groceries: [
+                    { label: 'Weight', type: 'number', name: 'weight' },
+                    { label: 'Unit', type: 'select', name: 'unit', options: ['kg', 'g', 'l', 'ml', 'pack'] },
+                    { label: 'Organic', type: 'checkbox', name: 'organic' },
+                    { label: 'Brand Origin', type: 'text', name: 'brandOrigin' }
+                ],
+                Bags: [
+                    { label: 'Material', type: 'select', name: 'material', options: ['Leather', 'Synthetic', 'Canvas', 'Cloth'] },
+                    { label: 'Size', type: 'select', name: 'size', options: ['Small', 'Medium', 'Large'] },
+                    { label: 'Color', type: 'checkbox', name: 'color', options: ['Red', 'Blue', 'Black'], allowCustom: true },
+                    { label: 'Type', type: 'select', name: 'type', options: ['Handbag', 'Backpack', 'Sling', 'Tote'] }
+                ],
+                Wellness: [
+                    { label: 'Type', type: 'select', name: 'type', options: ['Supplement', 'Vitamin', 'Herbal', 'Fitness'] },
+                    { label: 'Weight', type: 'number', name: 'weight' },
+                    { label: 'Ingredients', type: 'textarea', name: 'ingredients' },
+                    { label: 'Dosage Form', type: 'radio', name: 'dosageForm', options: ['Capsule', 'Tablet', 'Powder', 'Liquid'] }
+                ]
+            };
+
+            const selectedFields = fields[category] || [];
+            selectedFields.forEach(f => {
+                const container = document.createElement('div');
+                const label = document.createElement('label');
+                label.textContent = f.label;
+                container.appendChild(label);
+
+                if (f.type === 'text' || f.type === 'number' || f.type === 'date') {
+                    const input = document.createElement('input');
+                    input.type = f.type;
+                    input.name = f.name;
+                    container.appendChild(input);
+                } else if (f.type === 'textarea') {
+                    const textarea = document.createElement('textarea');
+                    textarea.name = f.name;
+                    container.appendChild(textarea);
+                } else if (f.type === 'select') {
+                    const select = document.createElement('select');
+                    select.name = f.name;
+                    f.options.forEach(opt => {
+                        const o = document.createElement('option');
+                        o.value = opt;
+                        o.textContent = opt;
+                        select.appendChild(o);
+                    });
+                    container.appendChild(select);
+                } else if (f.type === 'checkbox' || f.type === 'radio') {
+                    const group = document.createElement('div');
+                    group.className = f.type === 'checkbox' ? 'checkbox-group' : 'radio-group';
+                    f.options.forEach(opt => {
+                        const w = document.createElement('div');
+                        const input = document.createElement('input');
+                        input.type = f.type;
+                        input.name = f.type === 'checkbox' ? f.name + '[]' : f.name;
+                        input.value = opt;
+                        const span = document.createElement('span');
+                        span.textContent = opt;
+                        w.appendChild(input);
+                        w.appendChild(span);
+                        group.appendChild(w);
+                    });
+                    container.appendChild(group);
+                    if (f.allowCustom) {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.textContent = 'Add Custom';
+                        btn.className = 'custom-btn';
+                        btn.onclick = () => addCustomOption(group, f.type, f.name);
+                        container.appendChild(btn);
+                    }
+                }
+                categoryFields.appendChild(container);
+            });
+        }
+
+        function addCustomField() {
+            const container = document.getElementById('customFields');
+            const div = document.createElement('div');
+            div.style.marginTop = '10px';
+            const fieldName = prompt('Enter field name:');
+            if (!fieldName) return;
+            const fieldType = prompt('Enter field type (text, number, checkbox, radio, date, file, textarea, select):', 'text');
+            if (!fieldType) return;
+            const label = document.createElement('label');
+            label.textContent = fieldName;
+            div.appendChild(label);
+
+            if (['text', 'number', 'date', 'file'].includes(fieldType)) {
+                const input = document.createElement('input');
+                input.type = fieldType;
+                input.name = fieldName;
+                div.appendChild(input);
+            } else if (fieldType === 'textarea') {
+                const t = document.createElement('textarea');
+                t.name = fieldName;
+                div.appendChild(t);
+            } else if (fieldType === 'select') {
+                const select = document.createElement('select');
+                select.name = fieldName;
+                const options = prompt('Enter options separated by comma:');
+                options.split(',').forEach(opt => {
+                    const o = document.createElement('option');
+                    o.value = o.textContent = opt.trim();
+                    select.appendChild(o);
+                });
+                div.appendChild(select);
+            } else if (fieldType === 'checkbox' || fieldType === 'radio') {
+                const group = document.createElement('div');
+                group.className = fieldType === 'checkbox' ? 'checkbox-group' : 'radio-group';
+                const options = prompt('Enter options separated by comma:');
+                options.split(',').forEach(opt => {
+                    const w = document.createElement('div');
+                    const i = document.createElement('input');
+                    i.type = fieldType;
+                    i.name = fieldType === 'checkbox' ? fieldName + '[]' : fieldName;
+                    i.value = opt.trim();
+                    const s = document.createElement('span');
+                    s.textContent = opt.trim();
+                    w.appendChild(i);
+                    w.appendChild(s);
+                    group.appendChild(w);
+                });
+                div.appendChild(group);
+            }
+            container.appendChild(div);
+        }
+
+        function addCustomOption(group, type, name) {
+            const val = prompt('Enter custom option:');
+            if (!val) return;
+            const w = document.createElement('div');
+            const i = document.createElement('input');
+            i.type = type;
+            i.name = type === 'checkbox' ? name + '[]' : name;
+            i.value = val;
+            const s = document.createElement('span');
+            s.textContent = val;
+            w.appendChild(i);
+            w.appendChild(s);
+            group.appendChild(w);
+        }
+
+        // Modal Functions
+        function showModal(jsonData) {
+            document.getElementById('jsonOutput').textContent = jsonData;
+            document.getElementById('modalBg').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('modalBg').style.display = 'none';
+        }
+
+        const backendurl = "http://localhost:4000/products/new-product";
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(backendurl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showModal('Product saved successfully!');
+                    form.reset();
+                    categoryFields.innerHTML = '';
+                } else {
+                    const error = await response.json();
+                    showModal('Error: ' + error.message);
+                }
+            } catch (err) {
+                showModal('Network error: ' + err.message);
+            }
+        });
+
+        // Sample JSON data for auto-fill button
+        const sampleProducts = [
+            {
+                brand: "Allen Solly",
+                name: "Men's Black Casual Shirt",
+                typeOfProduct: "Casual Shirt",
+                category: "FASHION",
+                discount: 23,
+                actualPrice: 1299,
+                discountedPrice: 999,
+                inStock: true,
+                description: "Comfortable cotton casual black shirt with full sleeves, perfect for office and outings.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Cotton",
+                gender: "Male",
+                pattern: "Solid",
+                fit: "regular"
+            },
+            {
+                brand: "U.S. Polo",
+                name: "Men's Coral Polo T-shirt",
+                typeOfProduct: "Polo T-shirt",
+                category: "FASHION",
+                discount: 20,
+                actualPrice: 1499,
+                discountedPrice: 1199,
+                inStock: true,
+                description: "Stylish coral-colored polo t-shirt with breathable fabric for daily wear.",
+                rating: 5,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Breathable fabric",
+                gender: "Male",
+                pattern: "Solid",
+                fit: "regular"
+            },
+            {
+                brand: "Saree Mahal",
+                name: "Women's Red Ethnic Saree",
+                typeOfProduct: "Ethnic Saree",
+                category: "FASHION",
+                discount: 17,
+                actualPrice: 2999,
+                discountedPrice: 2499,
+                inStock: true,
+                description: "Elegant red saree crafted from fine georgette with detailed embroidery work.",
+                rating: 5,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Georgette",
+                gender: "Female",
+                pattern: "Embroidered",
+                fit: null
+            },
+            {
+                brand: "Biba",
+                name: "Women's Blue Printed Kurti",
+                typeOfProduct: "Printed Kurti",
+                category: "FASHION",
+                discount: 18,
+                actualPrice: 1699,
+                discountedPrice: 1399,
+                inStock: true,
+                description: "Trendy blue printed kurti with 3/4th sleeves, comfortable for casual and office wear.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Printed",
+                fit: "regular"
+            },
+            {
+                brand: "Van Heusen",
+                name: "Men's Maroon Formal Shirt",
+                typeOfProduct: "Formal Shirt",
+                category: "FASHION",
+                discount: 16,
+                actualPrice: 1899,
+                discountedPrice: 1599,
+                inStock: true,
+                description: "Classic maroon formal shirt tailored for office meetings and special occasions.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Male",
+                pattern: "Solid",
+                fit: "regular"
+            },
+            {
+                brand: "Jack & Jones",
+                name: "Men's Light Pink Polo T-shirt",
+                typeOfProduct: "Polo T-shirt",
+                category: "FASHION",
+                discount: 15,
+                actualPrice: 1299,
+                discountedPrice: 1099,
+                inStock: true,
+                description: "Light pink polo t-shirt with soft cotton fabric and short sleeves.",
+                rating: 3,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Cotton",
+                gender: "Male",
+                pattern: "Solid",
+                fit: "regular"
+            },
+            {
+                brand: "Only",
+                name: "Women's Grey Floral Top",
+                typeOfProduct: "Floral Top",
+                category: "FASHION",
+                discount: 25,
+                actualPrice: 999,
+                discountedPrice: 749,
+                inStock: false,
+                description: "Chic grey floral printed top with half sleeves, perfect for casual wear.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Floral",
+                fit: "regular"
+            },
+            {
+                brand: "Van Heusen",
+                name: "Men's Light Purple Formal Shirt",
+                typeOfProduct: "Formal Shirt",
+                category: "FASHION",
+                discount: 25,
+                actualPrice: 1599,
+                discountedPrice: 1199,
+                inStock: true,
+                description: "Elegant light purple formal shirt with a crisp collar and slim fit design, ideal for office wear.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Male",
+                pattern: "Solid",
+                fit: "slim"
+            },
+            {
+                brand: "ONLY",
+                name: "Women's Red Net Sleeve Top",
+                typeOfProduct: "Net Sleeve Top",
+                category: "FASHION",
+                discount: 25,
+                actualPrice: 1199,
+                discountedPrice: 899,
+                inStock: true,
+                description: "Trendy red top with stylish net sleeves, perfect for party wear and casual occasions.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Net",
+                gender: "Female",
+                pattern: "Solid",
+                fit: "regular"
+            },
+            {
+                brand: "AND",
+                name: "Women's Off-Shoulder Navy Printed Top",
+                typeOfProduct: "Printed Top",
+                category: "FASHION",
+                discount: 29,
+                actualPrice: 1399,
+                discountedPrice: 999,
+                inStock: true,
+                description: "Trendy off-shoulder navy top with floral print, perfect for brunch or casual outings.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Floral",
+                fit: "regular"
+            },
+            {
+                brand: "Sangria",
+                name: "Women's Peach Designer Saree",
+                typeOfProduct: "Designer Saree",
+                category: "FASHION",
+                discount: 24,
+                actualPrice: 2499,
+                discountedPrice: 1899,
+                inStock: true,
+                description: "Stylish peach saree with modern design, ideal for festive and wedding occasions.",
+                rating: 5,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Modern",
+                fit: null
+            },
+            {
+                brand: "Biba",
+                name: "Women's Purple Ethnic Suit Set",
+                typeOfProduct: "Ethnic Suit Set",
+                category: "FASHION",
+                discount: 24,
+                actualPrice: 2899,
+                discountedPrice: 2199,
+                inStock: true,
+                description: "Beautiful purple suit set with dupatta, perfect for weddings and ethnic occasions.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: null,
+                fit: null
+            },
+            {
+                brand: "Van Heusen",
+                name: "Men's Black Slim Fit Shirt",
+                typeOfProduct: "Slim Fit Shirt",
+                category: "FASHION",
+                discount: 22,
+                actualPrice: 1799,
+                discountedPrice: 1399,
+                inStock: true,
+                description: "Classic black slim-fit shirt with button closure, perfect for formal and semi-formal events.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Male",
+                pattern: "Solid",
+                fit: "slim"
+            },
+            {
+                brand: "Allen Solly",
+                name: "Men's Navy Blue Checked Casual Shirt",
+                typeOfProduct: "Casual Shirt",
+                category: "FASHION",
+                discount: 21,
+                actualPrice: 1899,
+                discountedPrice: 1499,
+                inStock: true,
+                description: "Navy blue checked casual shirt with full sleeves, perfect for a stylish everyday look.",
+                rating: 5,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Male",
+                pattern: "Checked",
+                fit: "regular"
+            },
+            {
+                brand: "Aurelia",
+                name: "Women's White Designer Kurti",
+                typeOfProduct: "Designer Kurti",
+                category: "FASHION",
+                discount: 20,
+                actualPrice: 1999,
+                discountedPrice: 1599,
+                inStock: true,
+                description: "Elegant white kurti with minimal design, ideal for festive and ethnic occasions.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Minimal",
+                fit: "regular"
+            },
+            {
+                brand: "Biba",
+                name: "Women's Pink Floral Saree",
+                typeOfProduct: "Floral Saree",
+                category: "FASHION",
+                discount: 23,
+                actualPrice: 2999,
+                discountedPrice: 2299,
+                inStock: true,
+                description: "Beautiful pink saree with floral prints, lightweight and perfect for festive occasions.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Floral",
+                fit: null
+            },
+            {
+                brand: "Roadster",
+                name: "Men's Black Long Sleeve T-Shirt",
+                typeOfProduct: "Long Sleeve T-Shirt",
+                category: "FASHION",
+                discount: 27,
+                actualPrice: 1499,
+                discountedPrice: 1099,
+                inStock: true,
+                description: "Soft cotton long sleeve tee in black with a clean crew neck.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Cotton",
+                gender: "Male",
+                pattern: "Solid",
+                fit: "regular"
+            },
+            {
+                brand: "Sangria",
+                name: "Women's Blue Georgette Saree",
+                typeOfProduct: "Georgette Saree",
+                category: "FASHION",
+                discount: 21,
+                actualPrice: 3299,
+                discountedPrice: 2599,
+                inStock: true,
+                description: "Flowy blue saree with subtle sheen and matching blouse piece.",
+                rating: 5,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Georgette",
+                gender: "Female",
+                pattern: null,
+                fit: null
+            },
+            {
+                brand: "Biba",
+                name: "Women's Red Silk Blend Saree",
+                typeOfProduct: "Silk Blend Saree",
+                category: "FASHION",
+                discount: 22,
+                actualPrice: 3599,
+                discountedPrice: 2799,
+                inStock: true,
+                description: "Rich red saree with contrast border, great for festive wear.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: "Silk Blend",
+                gender: "Female",
+                pattern: null,
+                fit: null
+            },
+            {
+                brand: "ONLY",
+                name: "Women's Solid Red Jumpsuit",
+                typeOfProduct: "Jumpsuit",
+                category: "FASHION",
+                discount: 25,
+                actualPrice: 1999,
+                discountedPrice: 1499,
+                inStock: true,
+                description: "Statement solid red jumpsuit with a flattering fit for evenings out.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Solid",
+                fit: null
+            },
+            {
+                brand: "W for Woman",
+                name: "Women's Black Printed Kurta",
+                typeOfProduct: "Printed Kurta",
+                category: "FASHION",
+                discount: 24,
+                actualPrice: 1699,
+                discountedPrice: 1299,
+                inStock: true,
+                description: "Straight black kurta with minimal geometric print and round neck.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Female",
+                pattern: "Geometric Print",
+                fit: "regular"
+            },
+            {
+                brand: "Jack & Jones",
+                name: "Men's Teal Striped T-Shirt",
+                typeOfProduct: "Striped T-Shirt",
+                category: "FASHION",
+                discount: 20,
+                actualPrice: 1499,
+                discountedPrice: 1199,
+                inStock: true,
+                description: "Teal crew neck tee with bold horizontal stripes and a comfy fit.",
+                rating: 4,
+                reviews: 0,
+                buyQuantity: 0,
+                material: null,
+                gender: "Male",
+                pattern: "Striped",
+                fit: "regular"
+            }
+        ]
+
+
+        let currentIndex = 0;
+
+        document.getElementById('fillBtn').addEventListener('click', () => {
+            if (currentIndex >= sampleProducts.length) currentIndex = 0; // reset to first product
+
+            const product = sampleProducts[currentIndex];
+            currentIndex++;
+
+            // Set category select and trigger dynamic fields render
+            // document.getElementById('category').value = product.category || "";
+            // renderCategoryFields(product.category);
+
+            const form = document.getElementById('productForm');
+
+            // Helper to set input by name
+            function setInputValue(name, value) {
+                const input = form.elements[name];
+                if (!input) return;
+
+                if (input.type === 'checkbox') {
+                    input.checked = value === true || value === "true";
+                } else if (input.type === 'radio') {
+                    if (value) {
+                        const radios = form.querySelectorAll(`input[name="${name}"]`);
+                        radios.forEach(radio => {
+                            radio.checked = radio.value.toLowerCase() === (value.toString().toLowerCase());
+                        });
+                    }
+                } else if (input.tagName === 'SELECT') {
+                    if (value) input.value = value;
+                } else {
+                    input.value = value || "";
+                }
+            }
+
+            // Set common fields
+            setInputValue('brand', product.brand);
+            setInputValue('name', product.name);
+            setInputValue('typeOfProduct', product.typeOfProduct);
+            setInputValue('discount', product.discount);
+            setInputValue('actualPrice', product.actualPrice);
+            setInputValue('discountedPrice', product.discountedPrice);
+            setInputValue('inStock', product.inStock);
+            setInputValue('description', product.description);
+            setInputValue('rating', product.rating);
+
+            // Delay setting dynamic fields
+            setTimeout(() => {
+                setInputValue('material', product.material);
+                setInputValue('gender', product.gender);
+                setInputValue('pattern', product.pattern);
+                setInputValue('fit', product.fit);
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

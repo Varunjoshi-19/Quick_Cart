@@ -1,0 +1,146 @@
+.cartContainer {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.cartTable {
+  flex: 2;
+  border : 1px solid rgba(188, 188, 188, 0.457);
+  box-shadow: 4px 5px rgba(209, 209, 209, 0.299);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cartHeader,
+.cartRow {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.cartRow:hover { 
+  background-color: rgba(188, 188, 188, 0.256);
+}
+
+.cartHeader {
+  background: #a7a7a786;
+  font-weight: bold;
+}
+
+.productInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productInfo img {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.stars {
+  font-size: 14px;
+  color: #f5a623;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity button {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 4px;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #444;
+}
+
+.removeBtn:hover {
+   background-color: rgba(255, 126, 126, 0.447);
+}
+
+.cartTotals {
+  flex: 1;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  height: fit-content;
+}
+
+.cartTotals h3 {
+  margin-bottom: 12px;
+}
+
+.totalsRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.price {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.checkoutBtn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #e91e63;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkoutBtn:hover {
+  background: #c2185b;
+}
+
+@media (max-width: 768px) {
+
+  .cartHeader,
+  .cartRow {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    font-size: 12px;
+  }
+
+  .cartRow>div:nth-child(4),
+  .cartRow>div:nth-child(5),
+  .cartHeader span:nth-child(4),
+  .cartHeader span:nth-child(5) {
+    display: none;
+  }
+
+  .cartContainer {
+    flex-direction: column;
+  }
+}

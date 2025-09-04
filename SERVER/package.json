@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "type": "module",
+  "private": true,
+  "module": "src/main/server.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "nodemon": "latest",
+    "prisma": "^6.15.0",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "start": "nodemon --watch src --ext ts --exec bun run ./src/main/server.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "@types/multer": "^2.0.0",
+    "appwrite": "^19.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0",
+    "multer": "^2.0.2",
+    "node-appwrite": "^18.0.0",
+    "razorpay": "^2.9.6"
+  }
+}

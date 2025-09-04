@@ -1,0 +1,168 @@
+.accountContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .tabs {
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+  }
+  
+  .tab {
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    color: #555;
+    position: relative;
+  }
+  
+  .tab.active {
+    color: #0073e6;
+    font-weight: 600;
+    border-bottom: 2px solid #0073e6;
+  }
+  
+  .profileSection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+  }
+  
+  .imageUpload {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .profileImg {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #0073e6;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .imageLabel:hover .overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .uploadIcon {
+     cursor: pointer;
+    font-size: 28px;
+    color: white;
+  }
+  
+  
+  
+  #fileInput {
+    display: none;
+  }
+  
+  .form {
+    flex: 1;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  .inputGroup {
+    position: relative;
+  }
+  
+  .inputGroup input {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    background: #f5f5f5;
+    transition: all 0.2s ease;
+  }
+  
+  .inputGroup input:focus {
+    border-color: #0073e6;
+    background: #fff;
+  }
+  
+  .inputGroup label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #666;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+  
+  .inputGroup input:focus + label,
+  .inputGroup input:not(:placeholder-shown) + label {
+    top: -6px;
+    left: 8px;
+    font-size: 12px;
+    color: #0073e6;
+    background: #fff;
+    padding: 0 4px;
+  }
+  
+  .saveBtn {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.3s;
+  }
+  
+  .saveBtn:hover {
+    background: #d62828;
+  }
+  
+  @media (max-width: 768px) {
+    .profileSection {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .profileImg {
+      margin-bottom: 20px;
+    }
+  }
+  

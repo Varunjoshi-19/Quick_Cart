@@ -1,0 +1,56 @@
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    padding: 10px 0;
+    position: relative;
+    z-index: 1000;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.item:hover {
+    background-color: #f3f3f3;
+}
+
+.item:hover .subCard {
+    transition: display 400ms;
+}
+
+.img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.subCard {
+    position: absolute;
+    top: 0;
+    left: 102%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 1100;
+    transition: display 400ms;
+}
+
+.subItem {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.subItem:hover {
+    background-color: #f3f3f3;
+}

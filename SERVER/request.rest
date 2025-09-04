@@ -1,0 +1,13 @@
+###
+GET http://localhost:4000/products/get-products
+
+
+###
+
+POST http://localhost:4000/api/order/payment
+Content-Type: application/json 
+
+{ 
+    "amount" : 45,
+    "currency" : "INR"
+}

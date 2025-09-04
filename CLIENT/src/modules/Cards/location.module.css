@@ -1,0 +1,123 @@
+.locationContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 25;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .locationAPI {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    z-index: 11;
+    background-color: black;
+    opacity: 0.7;
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+  
+  .locations {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    width: 420px;
+    height: auto;
+    margin-bottom: 25px;
+    max-height: 600px;
+    z-index: 20;
+    opacity: 1;
+    border-radius: 10px;
+    background-color: #fff;
+  
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .locations.closing {
+    animation: slideDown 0.3s ease-in forwards;
+  }
+  
+  .locations .locationSearchCont {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: auto;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #ababab73;
+  }
+  
+  .locations .locationSearchCont #searchInput {
+    width: 80%;
+    color: black;
+    height: 50px;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    background-color: transparent;
+  }
+  
+  .locations .allCountries {
+    display: flex;
+    padding: 0px;
+    gap: 10px;
+    flex-direction: column;
+    height: auto;
+    max-height: 80%;
+    overflow-y: auto;
+  }
+  
+  .locations .allCountries::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .locations .allCountries::-webkit-scrollbar-track {
+    background-color: #fff;
+  }
+  
+  .locations .allCountries::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0px;
+  }
+  
+  .locations .allCountries #eachCountry {
+    padding: 15px 5px;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin: 0;
+    border-radius: 5px;
+    transition: background-color linear 200ms;
+  }
+  
+  .locations .allCountries #eachCountry:hover {
+    background-color: #92929258;
+    cursor: pointer;
+  }
+  

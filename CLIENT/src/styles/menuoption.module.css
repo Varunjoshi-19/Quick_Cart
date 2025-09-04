@@ -1,0 +1,38 @@
+.menuBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px solid #ddd;
+    z-index: 999;
+}
+
+.menuItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #444;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.menuItem:hover {
+    transform: scale(1.1);
+    color: #0073e6;
+}
+
+.menuItem svg {
+    margin-bottom: 2px;
+}
+
+@media (min-width: 991px) {
+    .menuBar {
+        display: none;
+    }
+}

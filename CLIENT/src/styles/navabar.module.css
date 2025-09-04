@@ -1,0 +1,350 @@
+/* ELEMENTS VISIBLE IN BOTH ------------------------ */
+.NavContainer {
+  position: fixed;
+  z-index: 2;
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: auto;
+  padding: 20px;
+  justify-content: space-between;
+  transition: transform 400ms;
+  align-items: center;
+  border-bottom: 1px solid rgba(101, 101, 101, 0.397);
+}
+
+.topOne {
+  display: flex;
+  width: 80%;
+  height: auto;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+
+#hideSomeArea {
+  transform: translateY(-50%);
+}
+
+
+
+.cartIcon {
+  position: relative;
+  user-select: none;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  padding: 7px;
+  background-color: rgba(255, 137, 137, 0.319);
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  margin-right: 10px;
+  margin-left: 4px;
+
+}
+
+.cartIcon:hover {
+  background-color: rgba(255, 137, 137, 0.523);
+
+}
+
+#itemCount {
+  position: absolute;
+  background-color: red;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  top: -10px;
+  border-radius: 50%;
+  padding: 10px;
+  right: 2px;
+}
+
+.logoContainer {
+  user-select: none;
+  width: auto;
+  height: auto;
+  display: flex;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+
+.bottomOne {
+  display: flex;
+  width: 90%;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  height: 60px;
+}
+
+
+.bottomOne::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+.bottomOne .eachItem {
+  position: relative;
+  display: flex;
+  height: 40px;
+  width: auto;
+  min-width: 140px;
+  cursor: pointer;
+  font-weight: bolder;
+  border-radius: 7px;
+  font-size: 13px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+
+}
+
+.bottomOne .eachItem:hover {
+  background-color: rgba(203, 203, 203, 0.263);
+}
+
+.bottomSubCard {
+  z-index: 10;
+  position: absolute;
+  left: 0px;
+  top: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 5px 0;
+  min-width: 150px;
+}
+
+.bottomSubItem {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.bottomSubItem:hover {
+  background-color: rgba(203, 203, 203, 0.263);
+}
+
+
+
+
+/* ELEMENTS VISIBLE IN BOTH ------------------------ */
+
+
+
+
+
+
+
+
+
+/* DESKTOP ELEMENTS ------------------------------ */
+
+.locationContainer {
+  display: flex;
+  margin-left: 2px;
+  margin-right: 2px;
+  font-family: Arial, Helvetica, sans-serif;
+  flex-direction: column;
+  border: 1px solid rgba(182, 182, 182, 0.532);
+  width: 180px;
+  height: auto;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  transition: background-color 400ms, box-shadow 400ms;
+}
+
+.locationContainer:hover {
+  background-color: rgba(187, 219, 251, 0.123);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.inputContainer input {
+  color: black;
+  width: 100%;
+  width: 411px;
+  max-width: 450px;
+  /* prevents it from getting too large */
+  min-width: 150px;
+  /* prevents it from shrinking too much */
+  border: none;
+  height: 30px;
+  outline: none;
+  font-size: 15px;
+  background-color: transparent;
+}
+
+
+.inputContainer {
+  width: auto;
+  background-color: rgba(181, 181, 181, 0.385);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin: 4px;
+
+}
+
+.LoginIcon {
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(157, 0, 255);
+  padding: 5px;
+  height: 40px;
+  width: 80px;
+  transition: background-color 400ms;
+}
+
+.LoginIcon:hover {
+  background-color: rgba(157, 0, 255, 0.738);
+}
+
+
+.allCategory {
+  position: relative;
+  display: flex;
+  margin-right: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-weight: 500;
+  color: white;
+  font-size: 13px;
+  background-color: #6D4AAE;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.allCategory:hover {
+  background-color: #6d4aaee8;
+}
+
+
+#categoryContainer {
+  z-index: 5;
+  display: flex;
+}
+
+
+/* DESKTOP ELEMENTS  ------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+/* MOBILE DEVICE ELEMENTS  ------------------------------- */
+.menuIcon {
+  display: none;
+  width: 40px;
+  padding: 4px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 400ms;
+}
+
+.menuIcon:hover {
+  background-color: rgba(0, 229, 255, 0.19);
+}
+
+
+/* MOBILE DEVICE ELEMENTS  ------------------------------- */
+
+
+
+@media (max-width : 1250px) {
+  .locationContainer {
+    display: none;
+  }
+}
+
+@media (max-width : 1018px) {
+  .inputContainer {
+    display: none;
+  }
+
+  .menuIcon {
+    display: flex;
+  }
+
+}
+
+
+@media (max-width : 1018px) {
+  #categoryContainer {
+    display: none;
+  }
+}
+
+
+
+@media (max-width : 764px) {
+
+  #categoryContainer {
+    display: none;
+  }
+
+  .bottomOne {
+    width: 100vw;
+    padding: 0px 10px;
+    overflow-x: auto;
+  }
+
+  .bottomSubCard {
+    display: none;
+  }
+
+  .LoginIcon {
+    display: none;
+  }
+
+  #userCircle {
+    display: none;
+  }
+
+  .eachItem {
+    font-size: 5px;
+
+  }
+
+  .bottomOne .eachItem {
+    flex-grow: gr;
+  }
+
+
+
+
+}

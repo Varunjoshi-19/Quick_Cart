@@ -1,0 +1,99 @@
+.orderContainer {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.tableWrapper {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+.table th,
+.table td {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.table th {
+    background: #f4f6f8;
+    font-weight: 600;
+}
+
+.link {
+    color: #0073e6;
+    cursor: pointer;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.pending {
+    background: #f8d7da;
+    color: #a94442;
+}
+
+.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .title {
+        font-size: 18px;
+    }
+
+    .table {
+        font-size: 12px;
+        min-width: 800px;
+    }
+}
+
+
+
+
+.tableWrapper::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.tableWrapper::-webkit-scrollbar {
+    width: 4px;
+    height: 8px;
+    background: #ffffff;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background: #a7a7a7;
+    cursor: pointer;
+
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+    background: #ffffff;
+}

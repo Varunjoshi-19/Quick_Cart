@@ -1,0 +1,148 @@
+.bg {
+  background: linear-gradient(135deg, #5b43b7 60%, #fff 0%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  background: white;
+  padding: 36px 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 36px rgba(88,55,153,0.16);
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logo {
+  width: 50px;
+  margin-bottom: 6px;
+}
+.title {
+  margin: 0 0 18px 0;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 500;
+  color: #4a366b;
+}
+
+.inputGroup {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+}
+.input {
+  width: 300px;
+  padding: 16px 10px 8px 10px;
+  border: 1px solid #d5d5e6;
+  border-radius: 7px;
+  font-size: 1rem;
+  background: transparent;
+  outline: none;
+}
+.label {
+  position: absolute;
+  left: 12px;
+  top: 15px;
+  color: #999;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(.42,0,.58,1);
+  background: white;
+  padding: 0 4px;
+}
+.labelFloat {
+  top: -12px;
+  font-size: .89rem;
+  color: #5b43b7;
+  font-weight: 500;
+}
+
+.forgotWrap {
+  margin-bottom: 12px;
+  text-align: left;
+  width: 100%;
+}
+.forgot {
+  color: #5b43b7;
+  font-size: 0.97rem;
+  text-decoration: none;
+}
+
+.signInBtn {
+  background: #5b43b7;
+  color: #fff;
+  border: none;
+  width: 100%;
+  padding: 11px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.17s;
+}
+.signInBtn:hover {
+  background: #6e55e7;
+}
+
+.cancelBtn {
+  background: #fff;
+  color: #5b43b7;
+  border: 1px solid #5b43b7;
+  width: 100%;
+  padding: 9px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background 0.13s;
+}
+.cancelBtn:hover {
+  background: #f6edff;
+}
+
+.signupWrap {
+  margin-bottom: 14px;
+  text-align: center;
+}
+.signup {
+  color: #5b43b7;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.socialWrap {
+  text-align: center;
+}
+.socialWrap span {
+  font-size: .93rem;
+  display: block;
+  margin-bottom: 9px;
+}
+.googleBtn {
+  background: #fff;
+  padding: 8px 18px;
+  border: 1px solid #d6d6e2;
+  border-radius: 7px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 400ms;
+}
+.googleIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.googleBtn:hover {
+   background-color: rgba(130, 243, 234, 0.559);
+}
+
+.googleBtn:active {
+   background-color: rgba(98, 174, 168, 0.559);
+   
+}

@@ -1,0 +1,218 @@
+.bg {
+  background: linear-gradient(135deg, #5b43b7 60%, #fff 0%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: white;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  border-radius: 12px;
+  box-shadow: 0 0.5rem 2.25rem rgba(88,55,153,0.16);
+  width: 90%;
+  gap : 5px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: clamp(40px, 8vw, 50px);
+  margin-bottom: 6px;
+}
+
+.title {
+  margin: 0 0 0.875rem 0;
+  font-size: clamp(1.3rem, 4vw, 1.52rem);
+  text-align: center;
+  font-weight: 500;
+  color: #4a366b;
+}
+
+.row {
+  display: flex;
+  gap: clamp(0.5rem, 2vw, 1.25rem);
+  width: 100%;
+}
+
+.inputGroup {
+  position: relative;
+  margin-bottom: clamp(0.8rem, 2vw, 1.25rem);
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: clamp(0.9rem, 2vw, 1rem) clamp(0.6rem, 1.5vw, 0.625rem) clamp(0.5rem, 1.5vw, 0.625rem) clamp(0.6rem, 1.5vw, 0.625rem);
+  border: none;
+  border-bottom: 0.1rem solid #d5d5e6;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  background: transparent;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #5b43b7;
+}
+
+/* Floating label */
+.label {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.9rem;
+  color: #999;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: white;
+  padding: 0 0.25rem;
+}
+
+.labelFloat {
+  top: -0.7rem;
+  left: 0.5rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.88rem);
+  color: #5b43b7;
+  font-weight: 500;
+}
+
+/* Force floating label on focus, input filled, or autofill */
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label,
+.input:-webkit-autofill + .label {
+  top: -0.7rem;
+  left: 0.5rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.88rem);
+  color: #5b43b7;
+  font-weight: 500;
+}
+
+/* Autofill fix for Chrome */
+.input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px #fff inset;
+  -webkit-text-fill-color: #333;
+}
+
+.input:-webkit-autofill + .label,
+.input:-webkit-autofill:focus + .label {
+  top: -0.7rem;
+  left: 0.5rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.88rem);
+  color: #5b43b7;
+  font-weight: 500;
+}
+
+/* Other form styles */
+.forgotWrap {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  text-align: left;
+}
+
+.forgot {
+  color: #5b43b7;
+  font-size: clamp(0.85rem, 2vw, 0.97rem);
+  text-decoration: none;
+}
+
+.btnWrap {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.1rem);
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.signUpBtn {
+  background: #5b43b7;
+  color: #fff;
+  border: none;
+  padding: clamp(0.7rem, 1.5vw, 0.9rem) 0;
+  border-radius: 6px;
+  font-weight: 600;
+  width: 50%;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  transition: background 0.17s;
+}
+
+.signUpBtn:hover {
+  background: #6e55e7;
+}
+
+.cancelBtn {
+  background: #fff;
+  color: #5b43b7;
+  border: 1px solid #5b43b7;
+  padding: clamp(0.6rem, 1.5vw, 0.85rem) 0;
+  border-radius: 6px;
+  font-weight: 600;
+  width: 50%;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  transition: background 0.13s;
+}
+
+.cancelBtn:hover {
+  background: #f6edff;
+}
+
+.signinWrap {
+  margin-bottom: 0.875rem;
+  text-align: center;
+}
+
+.signin {
+  color: #5b43b7;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+}
+
+.socialWrap {
+  text-align: center;
+}
+
+.socialWrap span {
+  font-size: clamp(0.85rem, 2vw, 0.93rem);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.googleBtn {
+  background: #fff;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.125rem);
+  border: 1px solid #d6d6e2;
+  border-radius: 7px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.googleIcon {
+  width: clamp(18px, 5vw, 22px);
+  height: clamp(18px, 5vw, 22px);
+}
+
+.googleBtn:hover {
+   background-color: rgba(130, 243, 234, 0.559);
+}
+
+.googleBtn:active {
+   background-color: rgba(98, 174, 168, 0.559);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
