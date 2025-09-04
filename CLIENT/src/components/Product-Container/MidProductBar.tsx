@@ -8,7 +8,7 @@ function MidProductBar() {
 
 
         <div className={styles.midProductContainer}>
-            {/* contains static images of offers  */}
+
 
             <div className={styles.centererContainer}>
 

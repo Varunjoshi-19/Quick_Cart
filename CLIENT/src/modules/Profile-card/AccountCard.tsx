@@ -3,6 +3,7 @@ import styles from "./accountcard.module.css";
 import { User, ShoppingBag, Heart, LogOut } from "lucide-react";
 import { useAuthStore } from "@/context";
 import { useNavigate } from "react-router-dom";
+import userLogo from "@/assets/default.jpg"
 
 type AccountCardProps = {
     onClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,7 +32,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ onClose }) => {
     return (
         <div ref={cardRef} className={styles.card}>
             <div className={styles.header}>
-            <img src={userData?.photoUrl} alt="" className={styles.avatar}  />
+            <img src={userData?.imageData.url  || userLogo} alt="" className={styles.avatar}  />
                 <div>
                     <div className={styles.name}>{userData?.name}</div>
                     <div className={styles.email}>{userData?.email}</div>

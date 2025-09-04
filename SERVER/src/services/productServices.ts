@@ -56,14 +56,33 @@ class ProductServices {
     async FetchProducts(req: Request, res: Response) {
 
 
-        let allProducts = [];
+        let allProducts: any[] = [];
 
         try {
             const electronicProducts = await Electronics.find().lean();
             const bagProducts = await Bags.find().lean();
+            const footwearProducts = await Footwear.find().lean();
             const fashionProducts = await Fashion.find().lean();
+            const beautyProducts = await Beauty.find().lean();
+            const groceriesProducts = await Groceries.find().lean();
+            const wellnessProducts = await Wellness.find().lean();
 
-            allProducts = [...electronicProducts, ...bagProducts, ...fashionProducts];
+            allProducts = [
+                ...electronicProducts,
+                ...footwearProducts,
+                ...bagProducts,
+                ...fashionProducts,
+                ...beautyProducts,
+                ...groceriesProducts,
+                ...wellnessProducts,
+            ];
+
+            // Fisher–Yates shuffle
+            for (let i = allProducts.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allProducts[i], allProducts[j]] = [allProducts[j], allProducts[i]];
+            }
+
             return res.status(202).json(allProducts);
 
         }

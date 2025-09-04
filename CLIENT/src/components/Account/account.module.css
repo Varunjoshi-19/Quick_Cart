@@ -41,13 +41,18 @@
   }
   
   .imageUpload {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .profileImg {
     width: 120px;
     height: 120px;
+    position: relative;
+    display: flex;
+  
+  }
+
+
+  
+  .profileImg {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid #0073e6;
@@ -59,7 +64,6 @@
     position: absolute;
     top: 0;
     cursor: pointer;
-
     left: 0;
     width: 100%;
     height: 100%;
@@ -73,7 +77,13 @@
     pointer-events: none;
   }
   
-  .imageLabel:hover .overlay {
+  .imageUpload:hover .overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .imageUpload:active .overlay,
+  .imageUpload:focus .overlay {
     opacity: 1;
     pointer-events: auto;
   }

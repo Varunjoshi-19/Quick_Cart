@@ -44,7 +44,6 @@ const dummyOrders: Order[] = [
         status: "completed",
         date: "2025-09-01",
     },
-    // Add 8 more dummy orders...
 ];
 
  function OrderComponent() {

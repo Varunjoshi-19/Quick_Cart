@@ -1,6 +1,6 @@
 import express from "express";
 import multer, { memoryStorage } from "multer";
-import { handleSignUp, handleUpdateUserDetails, handleUserLogin } from "../controllers/user";
+import { handleSaveGoogleLogin, handleSignUp, handleUpdateUserDetails, handleUserLogin, handleChangePassword } from "../controllers/user";
 
 
 
@@ -11,8 +11,11 @@ const upload = multer({
 });
 
 router.post("/login", handleUserLogin);
+router.post("/google-login" , handleSaveGoogleLogin);
 router.post("/signup", handleSignUp);
 router.post("/update-user", upload.single("file"), handleUpdateUserDetails);
+
+router.post("/change-password", handleChangePassword);
 
 
 export default router;

@@ -2,8 +2,8 @@ import styles from "@/styles/newProuduct.module.css";
 import { useGlobalContext } from "@/context/Context";
 import { useState } from "react";
 import { Star } from "lucide-react";
-import { useCartStore } from "@/context";
-import type { CartItem } from "@/interface";
+import { useNotify } from "@/modules/Prompts/notify";
+import { useNavigate } from "react-router-dom";
 
 interface ProductItemProps {
   product: any;
@@ -14,11 +14,11 @@ interface ProductItemProps {
 
 const ProductItem: React.FC<ProductItemProps> = ({ product, onAddToCart, onIncrement, onDecrement }) => {
   const [showFullDesc, setShowFullDesc] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <div className={styles.card}>
 
-      <div className={styles.imageWrapper}>
+      <div onClick={() => navigate(`/product/${product._id}`)} className={styles.imageWrapper}>
         <img
           src={product.productImage}
           alt={product.name}
@@ -81,66 +81,41 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onAddToCart, onIncre
 };
 
 const NewProducts: React.FC = () => {
-  const { products, setProducts } = useGlobalContext();
-  const { addCartItem, removeItem } = useCartStore();
+  const { products, performCartAction } = useGlobalContext();
+  const notify = useNotify();
 
-  const handleAddToCart = (id: string) => {
+  const handleAddToCart = async (id: string) => {
     const product = products.get(id);
     if (!product) return;
-
-    const updatedProducts = new Map(products);
-    updatedProducts.set(id, { ...product, quantity: 1 });
-    setProducts(updatedProducts);
-
-    const item: Omit<CartItem, "quantity"> = {
-      _id: product._id,
-      name: product.name,
-      price: product.discountedPrice,
-      imageUrl: product.productImage,
-    };
-    addCartItem(item, 1);
+    await performCartAction(product, "add");
   };
 
-  const handleIncrement = (id: string) => {
+  const handleIncrement = async (id: string) => {
     const product = products.get(id);
     if (!product) return;
-
-    const updated = new Map(products);
-    updated.set(id, { ...product, quantity: product.quantity + 1 });
-    setProducts(updated);
-
-    const item: Omit<CartItem, "quantity"> = {
-      _id: product._id,
-      name: product.name,
-      price: product.discountedPrice,
-      imageUrl: product.productImage,
-    };
-    addCartItem(item, 1);
+    await performCartAction(product, "inc");
   };
 
-  const handleDecrement = (id: string) => {
+  const handleDecrement = async (id: string) => {
     const product = products.get(id);
     if (!product) return;
-
-    const updated = new Map(products);
-    const newQuantity = product.quantity - 1;
-    updated.set(id, { ...product, quantity: newQuantity < 0 ? 0 : newQuantity });
-    setProducts(updated);
-
-    removeItem(product._id, 1);
+    await performCartAction(product, "dec");
   };
 
   return (
     <div className={styles.container}>
-      {Array.from(products.values()).map((product: any) => (
-        <ProductItem
-          key={product._id}
-          product={product}
-          onAddToCart={handleAddToCart}
-          onIncrement={handleIncrement}
-          onDecrement={handleDecrement}
-        />
-      ))}
+      {Array.from(products.values())
+        .slice(0, 30) // take only 30
+        .map((product: any) => (
+          <ProductItem
+            key={product._id}
+            product={product}
+            onAddToCart={handleAddToCart}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+          />
+        ))}
+
     </div>
   );
 };

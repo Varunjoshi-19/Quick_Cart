@@ -3,12 +3,13 @@ import styles from "@/styles/sidebar.module.css";
 import { ChevronDown, X } from "lucide-react";
 import { useAuthStore } from "@/context";
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "@/context/Context";
 
 interface SidebarProps {
     setOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>;
     setLocationApiBox: React.Dispatch<React.SetStateAction<boolean>>;
     sidebarOpen: boolean;
-    selectedCountry: string;
+  
 }
 
 
@@ -28,9 +29,10 @@ const categories: Category[] = [
     { name: "Wellness", icon: "🧘", subItems: ["Supplements", "Yoga", "Fitness"] },
 ];
 
-export default function SideBar({ selectedCountry, sidebarOpen, setOpenSideBar, setLocationApiBox }: SidebarProps) {
+export default function SideBar({  sidebarOpen, setOpenSideBar, setLocationApiBox }: SidebarProps) {
 
     const [openCategory, setOpenCategory] = useState<string | null>(null);
+    const { currentCountry } = useGlobalContext();
     const { userData, removeUser } = useAuthStore();
     const navigate = useNavigate();
 
@@ -49,12 +51,17 @@ export default function SideBar({ selectedCountry, sidebarOpen, setOpenSideBar, 
                         document.body.style.overflowX = "hidden";
                         setOpenSideBar(false);
                         const element = document.querySelector("[data-menuOptionBar]") as HTMLDivElement;
-                        if (element) element.style.display = "flex";
+                        if (element) {
+                            if(document.body.clientWidth < 991) {
+                                 element.style.display = "flex";
+                            }
+                            else element.style.display = "none";
+                        }
                     }} size={24} />
                 </div>
 
                 <div onClick={() => setLocationApiBox(true)} className={styles.location}>
-                    <input type="text" readOnly value={selectedCountry === "---" ? "Your location" : selectedCountry}
+                    <input type="text" readOnly value={currentCountry || "Select Country"} 
                         style={{ cursor: "pointer" }} />
                 </div>
 

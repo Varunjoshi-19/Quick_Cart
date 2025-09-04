@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import userRoute from "../routes/userRoute"
 import productRoute from "../routes/productRoute";
 import otherRoute from "../routes/other";
+import cartRoute from "../routes/cartRoute";
 import dbConnect from "../database/connection";
 import cors from "cors";
 
@@ -27,6 +28,7 @@ async function startServer() {
     app.use("/api", otherRoute);
     app.use("/user", userRoute);
     app.use("/products", productRoute);
+    app.use("/cart", cartRoute);
 
 
     app.listen(PORT, () => {

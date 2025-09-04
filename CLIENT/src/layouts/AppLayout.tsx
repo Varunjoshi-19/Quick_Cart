@@ -11,12 +11,11 @@ function AppLayout() {
 
     const [showButton, setShowButton] = useState(false);
     const { notification } = useGlobalContext();
- 
+
 
     useEffect(() => {
-          
-    scrollToTop();
-     
+
+
         const handleScroll = () => {
             if (window.scrollY > 300) {
                 setShowButton(true);
@@ -25,8 +24,24 @@ function AppLayout() {
             }
         };
 
+        function toogleMenuBarDsiplay() {
+            const element = document.querySelector("[data-menuOptionBar]") as HTMLDivElement;
+            if (element) {
+                if (document.body.clientWidth < 991) {
+                    element.style.display = "flex";
+                }
+                else element.style.display = "none";
+            }
+        }
+
+        window.addEventListener("resize", toogleMenuBarDsiplay);
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        scrollToTop();
+        toogleMenuBarDsiplay();
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", toogleMenuBarDsiplay);
+        }
     }, []);
 
 

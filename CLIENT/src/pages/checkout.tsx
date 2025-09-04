@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { loadRazorpayScript, RazorPayPaymentVerification } from "@/utils";
 import { config } from "@/config";
 import { useGlobalContext } from "@/context/Context";
+import CenterLoader from "@/modules/Loaders/CenterLoader";
 
 const Checkout = () => {
 
     const { cartItems, clearCart } = useCartStore();
     const [paymentVerifiedAndDone, setPaymentVerifiedAndDone] = useState<boolean>(false);
     const {  setNotify } = useGlobalContext();
+    const [busy, setBusy] = useState(false);
 
 
     const navigate = useNavigate();
@@ -46,6 +48,7 @@ const Checkout = () => {
         e.preventDefault();
         localStorage.setItem("delivery-address", JSON.stringify(formData));
 
+        setBusy(true);
         const res = await loadRazorpayScript();
 
         if (!res) {
@@ -117,6 +120,7 @@ const Checkout = () => {
 
         const rzp = new (window as any).Razorpay(options);
         rzp.open();
+        setBusy(false);
 
     }
 
@@ -177,6 +181,7 @@ const Checkout = () => {
         <>
 
             <div className={styles.checkoutContainer}>
+                <CenterLoader show={busy} message="Processing payment..." />
 
                 <form id="billing" className={styles.billingForm} onSubmit={handleSaveAddressAndProceed}>
                     <h3>Billing Details</h3>

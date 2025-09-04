@@ -1,6 +1,3 @@
-import { addDoc, collection } from "firebase/firestore";
-import type { SignUpProps } from "../interface";
-import { db } from "../config/firebase";
 import { config } from "@/config";
 
 
@@ -17,30 +14,6 @@ export function lookForUserData() {
         return parsedData;
     }
     return null;
-}
-
-export async function saveCredentailsInDatabase(userData: SignUpProps) {
-
-    try {
-        const document = await addDoc(collection(db, "users"), userData as SignUpProps);
-        console.log(document);
-        if (!document) {
-            return {
-                error: "failed to signup",
-                success: false
-            }
-        }
-        return {
-            success: true
-        }
-    } catch (error: any) {
-        return {
-            error: error.message,
-            success: false
-        }
-    }
-
-
 }
 
 export async function fetchAllCountries() {

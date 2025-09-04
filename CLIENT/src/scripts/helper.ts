@@ -66,7 +66,7 @@ export const Images = [
     },
     {
         src: bag,
-        name: "BAG",
+        name: "BAGS",
         backgroundColor: "#FDF0FF",
         isSelected: false
     },

@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     background: #fff;
-    display: flex;
+    display: none;
     justify-content: space-around;
     align-items: center;
     padding: 8px 0;
@@ -31,8 +31,8 @@
     margin-bottom: 2px;
 }
 
-@media (min-width: 991px) {
+@media (max-width: 991px) {
     .menuBar {
-        display: none;
+        display: flex ;
     }
 }

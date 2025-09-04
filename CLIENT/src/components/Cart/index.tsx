@@ -2,11 +2,14 @@ import { Home } from "lucide-react";
 import emptyCartStyles from "./design/emptycart.module.css";
 import cart from "@/assets/cart.png";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import styles from "./design/Itemcart.module.css";
 import { X, Minus, Plus } from "lucide-react";
-import { useCartStore } from "@/context";
+import { useCartStore, useAuthStore } from "@/context";
 import type { CartItem as StoreCartItem } from "@/interface";
 import { useGlobalContext } from "@/context/Context";
+import { updateCartQuantity, removeFromCart } from "@/services/cart";
+import Overlay from "@/modules/Loaders/Overlay";
 
 
 interface EmptyListProps {
@@ -43,12 +46,16 @@ export const EmptyList = ({ name, listName, listDesc }: EmptyListProps) => {
 export const ItemCart = () => {
 
     const { addCartItem, removeItem, cartItems } = useCartStore();
+    const { userData } = useAuthStore();
     const { setProducts } = useGlobalContext();
     const navigate = useNavigate();
+    const [busy, setBusy] = useState(false);
 
     const itemsArray = cartItems ? Array.from(cartItems.values()) : [];
 
-    const handleIncrement = (item: StoreCartItem) => {
+    const handleIncrement = async (item: StoreCartItem) => {
+        if (busy) return;
+        setBusy(true);
         const payload = {
             _id: item._id,
             name: item.name,
@@ -64,9 +71,17 @@ export const ItemCart = () => {
             }
             return newMap;
         });
+
+        if ((userData as any)?.id) {
+            const newQty = item.quantity + 1;
+            await updateCartQuantity({ userId: (userData as any).id, productId: item._id, quantity: newQty });
+        }
+        setBusy(false);
     };
 
-    const handleDecrement = (item: StoreCartItem) => {
+    const handleDecrement = async (item: StoreCartItem) => {
+        if (busy) return;
+        setBusy(true);
         removeItem(item._id, 1);
         setProducts(previousProducts => {
             const newMap = new Map(previousProducts);
@@ -77,9 +92,17 @@ export const ItemCart = () => {
             }
             return newMap;
         });
+
+        if ((userData as any)?.id) {
+            const newQty = Math.max(0, item.quantity - 1);
+            await updateCartQuantity({ userId: (userData as any).id, productId: item._id, quantity: newQty });
+        }
+        setBusy(false);
     };
 
-    const handleRemove = (item: StoreCartItem) => {
+    const handleRemove = async (item: StoreCartItem) => {
+        if (busy) return;
+        setBusy(true);
         removeItem(item._id, item.quantity);
         setProducts(previousProducts => {
             const newMap = new Map(previousProducts);
@@ -89,12 +112,18 @@ export const ItemCart = () => {
             }
             return newMap;
         });
+
+        if ((userData as any)?.id) {
+            await removeFromCart({ userId: (userData as any).id, productId: item._id });
+        }
+        setBusy(false);
     };
 
     const subtotal = itemsArray.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
         <div className={styles.cartContainer}>
+            <Overlay show={busy} message="Updating your cart..." />
 
 
             <div className={styles.cartTable}>

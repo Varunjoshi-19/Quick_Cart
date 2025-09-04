@@ -1,29 +1,34 @@
 import styles from "@/styles/navabar.module.css";
+import SearchBarProducts from "./SearchBarProducts";
 import { AlignJustify, ChevronDown, Search, UserCircle } from "lucide-react";
 import webLogo from "@/assets/myWebLogo.png";
 import cartIcon from "@/assets/cart.svg";
 import { useAuthStore, useCartStore } from "@/context";
 import { useNavigate } from "react-router-dom";
 import { Images, SubItems } from "@/scripts/helper";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import AccountCard from "@/modules/Profile-card/AccountCard";
 import ItemCard from "@/modules/Cards/ItemCard";
 import Location from "@/modules/Cards/Location";
 import { scrollToTop } from "@/utils";
 import SideBar from "./SideBar";
+import { useGlobalContext } from "@/context/Context";
 
 function NavBar() {
     const navigate = useNavigate();
     const { userData } = useAuthStore();
     const { cartItems } = useCartStore();
+    const { currentCountry } = useGlobalContext();
 
     const [profileCardOpen, setProfileCardOpen] = useState(false);
     const [categoryCardOpen, setCategoryCardOpen] = useState(false);
     const [hideSomeTopArea, setHideSomeArea] = useState(false);
     const [hoveredBottomItem, setHoveredBottomItem] = useState<string | null>(null);
     const [locationApiBox, setLocationApiBox] = useState<boolean>(false);
-    const [selectedCountry, setSelectedCountry] = useState<string>("---");
     const [sidebarOpen, setOpenSideBar] = useState<boolean>(false);
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showResults, setShowResults] = useState(false);
 
 
     useEffect(() => {
@@ -46,11 +51,11 @@ function NavBar() {
     return (
 
         <>
-            {selectedCountry && <SideBar setOpenSideBar={setOpenSideBar} selectedCountry={selectedCountry}
+            <SideBar setOpenSideBar={setOpenSideBar}
                 setLocationApiBox={setLocationApiBox}
-                sidebarOpen={sidebarOpen} />}
+                sidebarOpen={sidebarOpen} />
 
-            {locationApiBox && <Location setLocationApiBox={setLocationApiBox} setSelectedCountry={setSelectedCountry} />}
+            {locationApiBox && <Location setLocationApiBox={setLocationApiBox} />}
 
             <nav
                 className={styles.NavContainer}
@@ -83,12 +88,35 @@ function NavBar() {
                         >
                             Your Location
                         </span>
-                        <span style={{ color: "blue", fontWeight: "bolder" }}>{selectedCountry}</span>
+                        <span style={{ color: "blue", fontWeight: "bolder" }}>{currentCountry}</span>
                     </div>
 
-                    <div className={styles.inputContainer}>
-                        <input type="text" placeholder="Search for products..." />
+                    <div className={styles.inputContainer} style={{ position: "relative" }}>
+                        <input
+                            type="text"
+                            placeholder="Search for products..."
+                            value={searchQuery}
+                            onChange={e => {
+                                setSearchQuery(e.target.value);
+                                setShowResults(e.target.value.length > 0);
+                            }}
+                            onFocus={() => setShowResults(searchQuery.length > 0)}
+                            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+                            style={{ width: "100%" }}
+                        />
                         <Search size={20} cursor={"pointer"} color="blue" />
+                        {showResults && (
+                            <div style={{ position: "absolute", top: "110%", left: 0, right: 0, zIndex: 1000 }}>
+                                <SearchBarProducts
+                                    query={searchQuery}
+                                    onSelect={product => {
+                                        setShowResults(false);
+                                        setSearchQuery("");
+                                        navigate(`/product/${product._id}`);
+                                    }}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div
@@ -187,7 +215,7 @@ function NavBar() {
                     ))}
 
                 </div>
-                
+
             </nav>
         </>
 

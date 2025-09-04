@@ -12,9 +12,11 @@
     "prisma": "^6.15.0",
     "typescript": "^5"
   },
-  "scripts": {
-    "start": "nodemon --watch src --ext ts --exec bun run ./src/main/server.ts"
-  },
+"scripts": {
+  "start": "bun run ./src/main/server.ts",
+  "seed:test-products": "bun run ./src/scripts/seedTestingProducts.ts"
+},
+
   "dependencies": {
     "@prisma/client": "^6.15.0",
     "@types/multer": "^2.0.0",

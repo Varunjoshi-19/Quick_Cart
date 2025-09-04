@@ -12,6 +12,11 @@ interface SingleProductProps {
     discount: string;
     stockStatus: string;
     imageSrc: string;
+    description?: string;
+    quantity?: number;
+    onAdd?: () => void;
+    onInc?: () => void;
+    onDec?: () => void;
 }
 
 interface ProductTabsProps {
@@ -32,6 +37,11 @@ const SingleProductMiddle: React.FC<SingleProductProps> = ({
     discount,
     stockStatus,
     imageSrc,
+    description,
+    quantity = 0,
+    onAdd,
+    onInc,
+    onDec,
 }) => {
     return (
         <div style={{ display: "flex", flexDirection: "column"  , justifyContent : "center" ,alignItems : "center"}}>
@@ -78,23 +88,24 @@ const SingleProductMiddle: React.FC<SingleProductProps> = ({
                         {stockStatus}
                     </p>
 
-                    <p className={styles.description}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard dummy text ever
-                        since the 1500s...
-                    </p>
+                    {description && (
+                        <p className={styles.description}>{description}</p>
+                    )}
 
                     <div className={styles.actionRow}>
-                        <div className={styles.quantity}>
-                            <button>
-                                <Minus size={16} />
-                            </button>
-                            <span>1</span>
-                            <button>
-                                <Plus size={16} />
-                            </button>
-                        </div>
-                        <button className={styles.cartBtn}>Add To Cart</button>
+                        {quantity > 0 ? (
+                            <div className={styles.quantity}>
+                                <button onClick={onDec}>
+                                    <Minus size={16} />
+                                </button>
+                                <span>{quantity}</span>
+                                <button onClick={onInc}>
+                                    <Plus size={16} />
+                                </button>
+                            </div>
+                        ) : (
+                            <button className={styles.cartBtn} onClick={onAdd}>Add To Cart</button>
+                        )}
                         <button className={styles.iconBtn}>
                             <Heart size={18} />
                         </button>

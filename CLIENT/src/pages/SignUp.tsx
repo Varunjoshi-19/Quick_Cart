@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styles from '../styles/signup.module.css';
 import webAppLogo from "../assets/myWebLogo.png";
 import { useNavigate } from 'react-router-dom';
-import { GoogleAuthentication } from '../services/GoogleAuth';
-import { useAuthStore } from '../context';
-import z from "zod";
 import { UserSignUpSchema } from '../schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { saveCredentailsInDatabase } from '../utils';
+import z from "zod";
+import { config } from '@/config';
+import { useNotify } from "@/modules/Prompts/notify";
+import CenterLoader from "@/modules/Loaders/CenterLoader";
 
 
 type UserSignUp = z.infer<typeof UserSignUpSchema>;
@@ -19,9 +19,6 @@ const Signup: React.FC = () => {
 
 
   const navigate = useNavigate();
-  const { setUserData } = useAuthStore();
-
-
 
 
   const [nameFloat, setNameFloat] = useState(false);
@@ -29,6 +26,8 @@ const Signup: React.FC = () => {
   const [passwordFloat, setPasswordFloat] = useState(false);
 
   const [signUpError, setSignUpError] = useState<string | null>(null);
+  const notify = useNotify();
+  const [busy, setBusy] = useState(false);
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<UserSignUp>({
     resolver: zodResolver(UserSignUpSchema),
@@ -38,7 +37,6 @@ const Signup: React.FC = () => {
   const name = watch("name", "");
   const email = watch("email", "");
   const password = watch("password", "");
-
 
 
   useEffect(() => {
@@ -52,32 +50,44 @@ const Signup: React.FC = () => {
   }, [signUpError]);
 
 
-
   const handleSignUp = async (data: UserSignUp) => {
-    const result = await saveCredentailsInDatabase(data);
-    const { error, success } = result;
-    if (!success) {
-      setSignUpError(error);
-      throw new Error(error);
+    try {
+      setBusy(true);
+      const response = await fetch(`${config.BACKEND_URL}/user/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          provider: "email"
+        })
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const message = result?.errorMessage || result?.message || "Failed to sign up";
+        setSignUpError(message);
+        return;
+      }
+
+      notify("Signed up successfully. Please sign in", "success");
+      setTimeout(() => navigate("/signin"), 800);
     }
-
-    navigate("/signin");
-    return;
+    catch (error: any) {
+      setSignUpError(error?.message || "Something went wrong while signing up.");
+    } finally {
+      setBusy(false);
+    }
   }
 
-  const handleGoogleSignin = async () => {
-    const info = await GoogleAuthentication();
-    const { data, success } = info;
-    if (!success) return;
-
-    setUserData(data);
-    localStorage.setItem("user-data", JSON.stringify(data));
-    navigate("/");
-
-  }
 
   return (
     <div className={styles.bg}>
+      <CenterLoader show={busy} message="Creating your account..." />
       <div className={styles.container}>
         <img src={webAppLogo} alt="Shopify" className={styles.logo} />
         <h2 className={styles.title}>Sign Up</h2>
@@ -146,17 +156,7 @@ const Signup: React.FC = () => {
         <div className={styles.signinWrap}>
           Already Registered? <a href="/signin" className={styles.signin}>Sign In</a>
         </div>
-        <div className={styles.socialWrap}>
-          <span>Or continue with social account</span>
-          <button onClick={handleGoogleSignin} className={styles.googleBtn}>
-            <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              alt="Google logo"
-              className={styles.googleIcon}
-            />
-            Sign In With Google
-          </button>
-        </div>
+
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from "../config/firebase";
+import { config } from '@/config';
 
 export const GoogleAuthentication = async () => {
     const provider = new GoogleAuthProvider();
@@ -9,8 +10,13 @@ export const GoogleAuthentication = async () => {
     }
 
     const token = await result.user.getIdToken();
+
     const userData = {
-        photoUrl: result.user.photoURL,
+        imageData: {
+            url: result.user.photoURL,
+        },
+        providerId: result.providerId,
+        provider: "google",
         name: result.user.displayName,
         email: result.user.email,
         token: token
@@ -21,4 +27,40 @@ export const GoogleAuthentication = async () => {
         data: userData,
         success: true
     }
+}
+
+export const SaveGoogleCredentails = async (data: any) => {
+
+    try {
+
+        const res = await fetch(`${config.BACKEND_URL}/user/google-login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+            return {
+                success: true,
+                message: "Logged in successfully!"
+            }
+        }
+
+        return {
+            success: false,
+            message: "failed to login!"
+        }
+
+
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.message
+        }
+
+    }
+
+
 }

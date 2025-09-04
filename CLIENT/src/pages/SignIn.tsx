@@ -6,8 +6,12 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignInSchema, } from '../schema';
-import { GoogleAuthentication } from '../services/GoogleAuth';
+import { GoogleAuthentication, SaveGoogleCredentails } from '../services/GoogleAuth';
 import { useAuthStore } from "../context/index";
+import { config } from '@/config';
+import { useNotify } from "@/modules/Prompts/notify";
+import { syncCartFromServer } from "@/context";
+import CenterLoader from "@/modules/Loaders/CenterLoader";
 
 type UserSignIn = z.infer<typeof UserSignInSchema>;
 
@@ -28,22 +32,68 @@ const SignIn: React.FC = () => {
 
     const emailValue = watch("email", "");
     const passValue = watch("password", "");
+    const notify = useNotify();
+    const [busy, setBusy] = useState(false);
 
 
     const handleSignIn = async (data: UserSignIn) => {
-        console.log("User data : ", data);
+        try {
+            setBusy(true);
+            const response = await fetch(`${config.BACKEND_URL}/user/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: data.email, password: data.password, provider: "email" })
+            });
 
+            const result = await response.json();
+
+            if (!response.ok) {
+                const message = result?.errorMessage || result?.message || "Login failed";
+                alert(message);
+                return;
+            }
+
+            const user = result?.user ?? null;
+            if (!user) {
+                alert("Invalid server response.");
+                return;
+            }
+
+            setUserData(user);
+            localStorage.setItem("user-data", JSON.stringify(user));
+            const uid = (user as any)?.id as string | undefined;
+            if (uid) {
+                await syncCartFromServer(uid);
+            }
+            notify("Signed in successfully", "success");
+            setTimeout(() => navigate("/"), 800);
+        } catch (error: any) {
+            alert(error?.message || "Something went wrong while logging in.");
+        } finally {
+            setBusy(false);
+        }
     }
 
     const handleGoogleSignin = async () => {
+        setBusy(true);
         const info = await GoogleAuthentication();
         const { data, success } = info;
         if (!success) return;
 
+        const result = await SaveGoogleCredentails(data);
+        if (!result.success) return;
+
         setUserData(data);
         localStorage.setItem("user-data", JSON.stringify(data));
-        navigate("/");
-
+        const gUid = (data as any)?.id as string | undefined;
+        if (gUid) {
+            await syncCartFromServer(gUid);
+        }
+        notify("Signed in with Google successfully", "success");
+        setTimeout(() => navigate("/"), 800);
+        setBusy(false);
     }
 
 
@@ -51,6 +101,7 @@ const SignIn: React.FC = () => {
 
     return (
         <div className={styles.bg}>
+            <CenterLoader show={busy} message="Signing you in..." />
             <div className={styles.container}>
                 <img src={webAppLogo} alt="quick-cart" className={styles.logo} />
                 <h2 className={styles.title}>Sign In</h2>

@@ -1,16 +1,16 @@
 import { Search, X } from "lucide-react";
 import style from "./location.module.css";
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchAllCountries, searchForSpecificCountry, toggleDomOverflow } from "@/utils";
+import { useGlobalContext } from "@/context/Context";
 
 interface LocationProps {
     setLocationApiBox: React.Dispatch<React.SetStateAction<boolean>>;
-    setSelectedCountry: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function Location({ setLocationApiBox, setSelectedCountry }: LocationProps) {
+function Location({ setLocationApiBox, }: LocationProps) {
 
-
+    const { setCurrentCountry, currentCountry } = useGlobalContext();
     const [countryName, setCountryName] = useState<string>("");
     const [countriesData, setCountriesData] = useState<any[]>([]);
     const [closing, setClosing] = useState(false);
@@ -102,7 +102,8 @@ function Location({ setLocationApiBox, setSelectedCountry }: LocationProps) {
                         countriesData.map((country) => (
                             <p
                                 onClick={() => {
-                                    setSelectedCountry(country.country);
+                                    setCurrentCountry(country.country);
+                                    localStorage.setItem("country", country.country);
                                     handleClose();
                                 }}
                                 id={style.eachCountry}
