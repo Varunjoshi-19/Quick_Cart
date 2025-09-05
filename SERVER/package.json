@@ -12,12 +12,13 @@
     "prisma": "^6.15.0",
     "typescript": "^5"
   },
-  "scripts": {
-    "build": "bunx prisma generate && bunx tsc",
-    "start": "bun run ./src/main/server.ts",
-    "db:push": "bunx prisma db push",
-    "db:migrate": "bunx prisma migrate deploy"
-  },
+"scripts": {
+  "build": "bun run prisma generate && bun run tsc",
+  "start": "bun run ./src/main/server.ts",
+  "db:push": "bun run prisma db push",
+  "db:migrate": "bun run prisma migrate deploy"
+},
+
   "dependencies": {
     "@prisma/client": "^6.15.0",
     "@types/multer": "^2.0.0",
