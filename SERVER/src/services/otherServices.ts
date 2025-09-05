@@ -54,7 +54,7 @@ class OtherServices {
 
     async saveOrder(req: Request, res: Response) {
         const { userId, orderId, paymentId, userName, productName, totalAmount, address } = req.body;
-
+       console.log(req.body);
         if (!userId || !orderId || !paymentId || !userName || !productName || !totalAmount || !address) {
             res.status(400).json({ errorMessage: "Missing required order details" });
             return;
