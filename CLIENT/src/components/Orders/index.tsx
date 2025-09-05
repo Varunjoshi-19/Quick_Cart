@@ -11,7 +11,7 @@ interface Order {
     orderId: string;
     paymentId: string;
     userName: string;
-    productName: string;
+    productName: { [key: string]: string };
     totalAmount: number;
     status: string;
     address: any;
@@ -75,8 +75,8 @@ function OrderComponent() {
                                     <td>{order.orderId}</td>
                                     <td>{order.paymentId}</td>
                                     <td className={styles.link}>{
-                                        JSON.parse(order.productName).map((product: { id: string, name: string }) => (
-                                            <span onClick={() => navigate(`/product/${product.id}`)} key={product.id}>{product.name}, </span>
+                                        Object.entries(order.productName).map(([key, value]: any) => (
+                                            <span onClick={() => navigate(`/product/${key}`)} key={key}>{value}, </span>
                                         ))
                                     }</td>
                                     <td>{order.userName}</td>

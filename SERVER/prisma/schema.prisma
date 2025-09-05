@@ -28,7 +28,7 @@ model Order {
   orderId     String   @unique
   paymentId   String
   userName    String
-  productName String
+  productName Json
   totalAmount Float
   address     Json
   status      String   @default("pending")

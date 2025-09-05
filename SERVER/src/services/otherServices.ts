@@ -69,7 +69,7 @@ class OtherServices {
                     orderId,
                     paymentId,
                     userName,
-                    productName : JSON.stringify(productName),
+                    productName,
                     totalAmount,
                     address
                 }
@@ -104,7 +104,6 @@ class OtherServices {
             });
             res.status(200).json(orders);
         } catch (error) {
-            console.error("Error fetching orders:", error);
             res.status(500).json({ errorMessage: "Failed to fetch orders" });
         }
 

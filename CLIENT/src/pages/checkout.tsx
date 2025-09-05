@@ -32,11 +32,9 @@ const Checkout = () => {
     });
 
     const itemsArray = cartItems ? Array.from(cartItems.values()) : [];
-    const productNames = itemsArray.map(item => {
-        return {
-            id: item._id,
-            name: item.name
-        }
+    const productsDetails: any = {};
+    itemsArray.map(item => {
+        productsDetails[item._id] = item.name;
     })
 
     const subtotal = itemsArray.reduce(
@@ -85,7 +83,7 @@ const Checkout = () => {
                     orderId: razorpay_order_id,
                     paymentId: razorpay_payment_id,
                     userName: formData.fullName,
-                    productName: productNames,
+                    productName: productsDetails,
                     totalAmount: subtotal,
                     address: formData,
                 }
