@@ -6,7 +6,7 @@ function Footer() {
         <footer className={styles.footer}>
             <div className={styles.newsletter}>
                 <div className={styles.newsletterContent}>
-                    <h4>$20 discount for your first order</h4>
+                    <h4>₹100 discount for your first order</h4>
                     <h2>Join our newsletter and get...</h2>
                     <p>
                         Join our email subscription now to get updates on promotions and
@@ -29,9 +29,9 @@ function Footer() {
             {/* Features Section */}
             <div className={styles.features}>
                 <div>🛒 Everyday fresh products</div>
-                <div>🚚 Free delivery for order over $70</div>
+                <div>🚚 Free delivery for order over ₹159</div>
                 <div>🔥 Daily Mega Discounts</div>
-                <div>💲 Best price on the market</div>
+                <div>₹ Best price on the market</div>
             </div>
 
             {/* Links Section */}
@@ -56,7 +56,7 @@ function Footer() {
 
             {/* Bottom Section */}
             <div className={styles.bottom}>
-                <p>Copyright 2024. All rights reserved</p>
+                <p>Copyright 2025. All rights reserved</p>
                 <div className={styles.socials}>
                     <FaFacebookF />
                     <FaTwitter />
