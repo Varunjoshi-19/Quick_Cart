@@ -69,7 +69,7 @@ class OtherServices {
                     orderId,
                     paymentId,
                     userName,
-                    productName,
+                    productName : JSON.stringify(productName),
                     totalAmount,
                     address
                 }
@@ -90,16 +90,16 @@ class OtherServices {
                 where: {
                     userId: id
                 },
-                select : {
-                     orderId : true,
-                     paymentId : true,
-                     productName : true,
-                     userId : true,
-                        userName : true,
-                        status : true,
-                        totalAmount : true,
-                        address : true,
-                        createdAt : true
+                select: {
+                    orderId: true,
+                    paymentId: true,
+                    productName: true,
+                    userId: true,
+                    userName: true,
+                    status: true,
+                    totalAmount: true,
+                    address: true,
+                    createdAt: true
                 }
             });
             res.status(200).json(orders);

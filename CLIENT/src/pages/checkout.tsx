@@ -85,7 +85,7 @@ const Checkout = () => {
                     orderId: razorpay_order_id,
                     paymentId: razorpay_payment_id,
                     userName: formData.fullName,
-                    productName: JSON.stringify(productNames),
+                    productName: productNames,
                     totalAmount: subtotal,
                     address: formData,
                 }
