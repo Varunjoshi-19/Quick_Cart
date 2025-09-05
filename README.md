@@ -1,6 +1,4 @@
-## LIVE LINK 🔗
-
-[VISIT\_HERE](#) *(https://quick-cart-fljo.vercel.app)*
+## LIVE LINK 🔗  <a href="https://talksgram-client.vercel.app/">VISIT_HERE</a>
 
 ## Description 📚
 
