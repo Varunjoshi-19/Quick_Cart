@@ -55,7 +55,7 @@ class OtherServices {
     async saveOrder(req: Request, res: Response) {
         const { userId, orderId, paymentId, userName, productName, totalAmount, address } = req.body;
         console.log("save order data", req.body);
-        if (!userId ||  !orderId || !paymentId || !userName || !productName || !totalAmount || !address) {
+        if (!userId || !orderId || !paymentId || !userName || !productName || !totalAmount || !address) {
             res.status(400).json({ errorMessage: "Missing required order details" });
             return;
         }
@@ -82,6 +82,33 @@ class OtherServices {
         }
     }
 
+    async getAllOrders(req: Request, res: Response) {
+        const { id } = req.params;
+        const prisma = dbConnections.getPrismaConnection();
+        try {
+            const orders = await prisma.order.findMany({
+                where: {
+                    userId: id
+                },
+                select : {
+                     orderId : true,
+                     paymentId : true,
+                     productName : true,
+                     userId : true,
+                        userName : true,
+                        status : true,
+                        totalAmount : true,
+                        address : true,
+                        createdAt : true
+                }
+            });
+            res.status(200).json(orders);
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+            res.status(500).json({ errorMessage: "Failed to fetch orders" });
+        }
+
+    }
 
 }
 

@@ -6,12 +6,14 @@ import { fetchUserCart } from "@/services/cart";
 
 
 export const useAuthStore = create<AuthUserDataProps>((set) => ({
+  
     userData: null,
     setUserData: (data: any) => set(() => ({
         userData: data
     })),
     removeUser: () => set(() => {
         localStorage.removeItem("user-data");
+        
         return { userData: null };
     })
 }));

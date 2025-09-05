@@ -10,16 +10,25 @@ import { useNotify } from "@/modules/Prompts/notify";
 import Overlay from "@/modules/Loaders/Overlay";
 
 
+
 export function ProductsList() {
 
     const [loading, setLoading] = useState(true);
+    const { category } = useParams();
 
+useEffect(() => {
+  if (!category) return;
 
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 2000);
-    }, []);
+  // show skeleton again whenever category changes
+  setLoading(true);
+
+  const timeoutId = setTimeout(() => {
+    setLoading(false);
+  }, 2000);
+
+  return () => clearTimeout(timeoutId);
+}, [category]);
+
 
     return (
         <div className={styles.container}>
@@ -94,8 +103,8 @@ export function ProductsList() {
 }
 
 export default function ActualProducts() {
-  
-    const { products, setProducts } = useGlobalContext();
+
+    const { products, setProducts, setNotify } = useGlobalContext();
     const { category } = useParams<{ category: string }>();
     const { addCartItem, removeItem } = useCartStore();
     const { userData } = useAuthStore();
@@ -104,6 +113,11 @@ export default function ActualProducts() {
     const [busy, setBusy] = useState(false);
 
     const handleAddToCart = async (id: string) => {
+
+        if (!userData) {
+            setNotify({ message: "Login to add items to cart", type: "error" });
+            return;
+        }
         if (busy) return;
         setBusy(true);
         const product = products.get(id);
@@ -138,6 +152,7 @@ export default function ActualProducts() {
     };
 
     const handleIncrement = async (id: string) => {
+        if (!userData) return;
         if (busy) return;
         setBusy(true);
         const product = products.get(id);
@@ -193,9 +208,9 @@ export default function ActualProducts() {
         <div className={styles.productsArea}>
             <Overlay show={busy} message="Updating your cart..." />
             {filteredProducts.map((product: any) => (
-            <div  key={product._id} className={styles.card}>
-                   
-                    <div onClick={() => navigate(`/product/${product._id}`)}  className={styles.media}>
+                <div key={product._id} className={styles.card}>
+
+                    <div onClick={() => navigate(`/product/${product._id}`)} className={styles.media}>
                         <img src={product.productImage} alt={product.name} />
                         {product.discount > 0 && (
                             <span className={styles.discountBadge}>{product.discount}%</span>

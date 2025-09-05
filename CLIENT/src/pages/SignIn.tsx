@@ -85,8 +85,11 @@ const SignIn: React.FC = () => {
         const result = await SaveGoogleCredentails(data);
         if (!result.success) return;
 
+        const dataUser = result.data;
+        localStorage.setItem("user-data", JSON.stringify(dataUser));
+
         setUserData(data);
-        localStorage.setItem("user-data", JSON.stringify(data));
+
         const gUid = (data as any)?.id as string | undefined;
         if (gUid) {
             await syncCartFromServer(gUid);

@@ -41,14 +41,18 @@ export const SaveGoogleCredentails = async (data: any) => {
             body: JSON.stringify(data)
         });
 
+        const result = await res.json();    
+
         if (res.ok) {
             return {
+                data : result.user,
                 success: true,
                 message: "Logged in successfully!"
             }
         }
 
         return {
+            data : null,
             success: false,
             message: "failed to login!"
         }
@@ -56,6 +60,7 @@ export const SaveGoogleCredentails = async (data: any) => {
 
     } catch (error: any) {
         return {
+            data : null,    
             success: false,
             message: error.message
         }

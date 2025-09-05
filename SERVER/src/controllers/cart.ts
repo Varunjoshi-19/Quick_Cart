@@ -17,4 +17,9 @@ export async function handleRemoveFromCart(req: Request, res: Response) {
     cartServices.removeFromCart(req, res);
 }
 
+export async function handleClearCart(req: Request, res: Response) {
+    cartServices.clearCart(req, res);
+}
+
+
 

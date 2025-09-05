@@ -32,4 +32,17 @@ export async function removeFromCart(payload: { userId: string; productId: strin
     return res.json().then((data) => ({ ok: res.ok, data }));
 }
 
+export async function clearServerCart(userId: string) {
 
+    try {
+        await fetch(`${config.BACKEND_URL}/cart/clear/${userId}`, {
+            method: "POST",
+        });
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+
+}

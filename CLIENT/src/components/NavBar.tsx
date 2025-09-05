@@ -23,7 +23,6 @@ function NavBar() {
     const [profileCardOpen, setProfileCardOpen] = useState(false);
     const [categoryCardOpen, setCategoryCardOpen] = useState(false);
     const [hideSomeTopArea, setHideSomeArea] = useState(false);
-    const [hoveredBottomItem, setHoveredBottomItem] = useState<string | null>(null);
     const [locationApiBox, setLocationApiBox] = useState<boolean>(false);
     const [sidebarOpen, setOpenSideBar] = useState<boolean>(false);
 
@@ -183,35 +182,22 @@ function NavBar() {
                     </div>
 
                     {Images.map((each, index) => (
-                        <div onClick={() => whereToNavigate(`/products/category/${each.name}`)} key={index} style={{ position: "relative", display: "flex", height: "auto" }}>
 
-                            <div
-                                data-ripple
-                                className={styles.eachItem}
-                                onMouseEnter={() => setHoveredBottomItem(each.name)}
-                                onMouseLeave={() => setHoveredBottomItem(null)}
-                            >
-                                <img
-                                    id={styles.eachItemIcon}
-                                    width={25}
-                                    src={each.src}
-                                    alt={each.name}
-                                />
-                                <span>{each.name}</span>
+                        <div onClick={() => navigate(`/products/category/${each.name.toUpperCase()}`)}
+                            data-ripple
+                            className={styles.eachItem}>
+                            <img
+                                id={styles.eachItemIcon}
+                                width={25}
+                                src={each.src}
+                                alt={each.name}
+                            />
+                            <span>{each.name}</span>
 
 
-                            </div>
-
-                            {hoveredBottomItem === each.name && SubItems[each.name] && (
-                                <div className={styles.bottomSubCard}>
-                                    {SubItems[each.name].map((sub) => (
-                                        <div key={sub} className={styles.bottomSubItem}>
-                                            {sub}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
                         </div>
+
+
                     ))}
 
                 </div>

@@ -177,7 +177,7 @@ class userServices {
             if (!user) return res.status(404).json({ message: "failed to sign up  as google!" });
 
 
-            res.status(202).json({ message: "sign up sucessfull with google!" });
+            res.status(202).json({ message: "sign up sucessfull with google!", user: user });
             return;
 
         } catch (error: any) {

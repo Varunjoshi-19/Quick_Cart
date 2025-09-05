@@ -23,3 +23,6 @@ JUST FOR DEVELOPMENT ---
     "seed:test-products": "bun run ./src/scripts/seedTestingProducts.ts"
 
 }
+
+
+"start": "bun run ./src/main/server.ts"

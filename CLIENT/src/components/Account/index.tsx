@@ -106,7 +106,7 @@ const Account: React.FC = () => {
             {activeTab === "profile" && (
                 <div className={styles.profileSection}>
                     <div onClick={() => { document.getElementById("fileInput")?.click(); }} className={styles.imageUpload}>
-                        <img src={previewImage ? previewImage : userData?.imageData.url || userLogo} alt="profile" className={styles.profileImg} />
+                    <img src={previewImage ? previewImage : userData?.imageData?.url || userLogo} alt="profile" className={styles.profileImg} />
                         <div className={styles.overlay}>
                             <img src={UploadIcon} alt="" width={50} />
                         </div>

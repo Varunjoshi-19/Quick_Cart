@@ -10,15 +10,21 @@ export interface SignInProps {
 }
 
 export interface userDataProps {
+    id : string;
+    imageData : {
+         fileId : string,
+         url : string
+    },
+    provider : string;
+    providerId : string;
     name: string;
     email: string;
-    photoUrl: string;
 }
 
 
 export interface AuthUserDataProps {
 
-    userData: any | { [key: string]: any },
+    userData: any | { [key: string]: userDataProps } | null;
     setUserData: (data: any) => void;
     removeUser: () => void;
 

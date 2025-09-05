@@ -13,7 +13,7 @@ interface GlobalContextProps {
     setProducts: React.Dispatch<React.SetStateAction<Map<any, any>>>;
     addOrIncrementProduct: (product: any) => Promise<void>;
     decrementProduct: (product: any) => Promise<void>;
-    currentCountry: string ;
+    currentCountry: string;
     setCurrentCountry: React.Dispatch<React.SetStateAction<string>>;
     performCartAction: (product: any, action: "add" | "inc" | "dec") => Promise<void>;
 }
@@ -55,8 +55,8 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
 
     useEffect(() => {
         (async () => {
-            const resultProducts: Omit<any, "quantity">[] = await fetchProducts();
 
+            const resultProducts: Omit<any, "quantity">[] = await fetchProducts();
             const productMap = new Map<string, any>(
                 resultProducts.map((product) => [
                     product._id,
@@ -101,6 +101,10 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
 
     async function addOrIncrementProduct(product: any) {
         if (!product || !product._id) return;
+        if (!userData) {
+            setNotify({ message: "Login to add items to cart", type: "error" });
+            return;
+        }
 
         setProducts(prev => {
             const m = new Map(prev);
@@ -131,7 +135,7 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
 
     async function decrementProduct(product: any) {
         if (!product || !product._id) return;
-
+        if (!userData) return;
         setProducts(prev => {
             const m = new Map(prev);
             const p = m.get(product._id);
@@ -154,6 +158,7 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
     }
 
     async function performCartAction(product: any, action: "add" | "inc" | "dec") {
+        if (!userData) return;
         if (action === "dec") {
             await decrementProduct(product);
             return;

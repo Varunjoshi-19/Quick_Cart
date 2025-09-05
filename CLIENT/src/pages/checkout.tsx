@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import styles from "@/styles/checkout.module.css";
-import { useCartStore } from "@/context";
+import { useAuthStore, useCartStore } from "@/context";
 import { useNavigate } from "react-router-dom";
 import { loadRazorpayScript, RazorPayPaymentVerification } from "@/utils";
 import { config } from "@/config";
 import { useGlobalContext } from "@/context/Context";
 import CenterLoader from "@/modules/Loaders/CenterLoader";
+import { clearServerCart } from "@/services/cart";
 
 const Checkout = () => {
 
     const { cartItems, clearCart } = useCartStore();
+    const { userData } = useAuthStore();
     const [paymentVerifiedAndDone, setPaymentVerifiedAndDone] = useState<boolean>(false);
-    const {  setNotify } = useGlobalContext();
+    const { setNotify } = useGlobalContext();
     const [busy, setBusy] = useState(false);
 
 
@@ -30,6 +32,12 @@ const Checkout = () => {
     });
 
     const itemsArray = cartItems ? Array.from(cartItems.values()) : [];
+    const productNames = itemsArray.map(item => {
+        return {
+            id: item._id,
+            name: item.name
+        }
+    })
 
     const subtotal = itemsArray.reduce(
         (acc, item) => acc + item.price * item.quantity,
@@ -67,17 +75,19 @@ const Checkout = () => {
             order_id: orderId,
             name: formData.fullName,
             description: "Order Payment",
+
             handler: async function (response: any) {
 
                 const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
-                const productNames = itemsArray.map(item => item.name).join(", ");
+
                 const orderDetailsData = {
+                    userId: userData.id,
                     orderId: razorpay_order_id,
                     paymentId: razorpay_payment_id,
                     userName: formData.fullName,
-                    productName: productNames,
+                    productName: JSON.stringify(productNames),
                     totalAmount: subtotal,
-                    address: `${formData.address}, ${formData.apartment}, ${formData.city}, ${formData.state}, ${formData.zip}, ${formData.country}`,
+                    address: formData,
                 }
 
                 if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -107,7 +117,6 @@ const Checkout = () => {
                 }
             },
 
-
             prefill: {
                 name: formData.fullName,
                 email: formData.email,
@@ -134,10 +143,10 @@ const Checkout = () => {
                 body: JSON.stringify(orderDetailsData)
             });
 
-            console.log("Order placement response status:", res.status);
 
             if (res.ok) {
                 const result = await res.json();
+                await clearServerCart(userData.id);
                 console.log("Order saved successfully:", result);
                 return;
             } else {

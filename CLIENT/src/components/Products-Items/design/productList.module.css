@@ -301,7 +301,7 @@
     .productsArea {
       grid-template-columns: repeat(2, 1fr);
     }
-    .skeletonLoaderContainer { grid-template-columns: repeat(2, 1fr); }
+    .skeletonLoaderContainer { min-width: 300px; grid-template-columns: repeat(2, 1fr); }
     .card { width: 100%; height: auto; }
   }
   

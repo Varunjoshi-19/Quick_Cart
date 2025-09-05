@@ -86,6 +86,22 @@ class CartServices {
             res.status(500).json({ errorMessage: error?.message || "Failed to remove from cart" });
         }
     }
+
+
+    async clearCart(req: Request, res: Response) {
+        try {
+            const userId = req.params.userId as string;
+            if (!userId) {
+                res.status(400).json({ errorMessage: "userId required" });
+                return;
+            }
+            await CartItem.deleteMany({ userId });
+            console.log("Cleared cart for user", userId);
+            res.status(200).json({ message: "Cart cleared" });
+        } catch (error: any) {
+            res.status(500).json({ errorMessage: error?.message || "Failed to clear cart" });
+        }
+    }
 }
 
 export default new CartServices();

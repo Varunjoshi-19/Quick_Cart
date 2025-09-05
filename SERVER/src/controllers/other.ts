@@ -13,3 +13,8 @@ export function handleSaveOrder(req: Request, res: Response) {
 export function handlePaymentVerify(req: Request, res: Response) {
     otherServices.paymentVerification(req, res);
 }
+
+
+export function handleGetAllOrders(req: Request, res: Response) {
+    otherServices.getAllOrders(req, res);
+}
