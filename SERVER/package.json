@@ -13,7 +13,10 @@
     "typescript": "^5"
   },
   "scripts": {
-    "start": "bun run ./src/main/server.ts"
+    "build": "bunx prisma generate && bunx tsc",
+    "start": "bun run ./src/main/server.ts",
+    "db:push": "bunx prisma db push",
+    "db:migrate": "bunx prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
