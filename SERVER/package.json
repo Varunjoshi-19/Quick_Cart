@@ -15,8 +15,7 @@
 "scripts": {
   "build": "bun run prisma generate && bun run tsc",
   "start": "bun run ./src/main/server.ts",
-  "db:push": "bun run prisma db push",
-  "db:migrate": "bun run prisma migrate deploy"
+  "db:push": "bun run prisma db push"
 },
 
   "dependencies": {
