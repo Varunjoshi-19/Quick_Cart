@@ -13,8 +13,9 @@
     "typescript": "^5"
   },
   "scripts": {
-    "start": "nodemon --watch src --ext ts --exec bun run ./src/main/server.ts",
-    "seed:test-products": "bun run ./src/scripts/seedTestingProducts.ts"
+    "build": "bun run prisma generate && bun run tsc",
+    "start": "bun run ./src/main/server.ts",
+    "db:push": "bun run prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
