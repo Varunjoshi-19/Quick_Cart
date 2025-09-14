@@ -43,7 +43,7 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
     const handleGetUserData = async () => {
 
         const data = lookForUserData();
-        console.log(data);
+        
         if (!data) return;
 
         setUserData(data);

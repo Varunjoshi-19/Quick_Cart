@@ -96,7 +96,7 @@ class CartServices {
                 return;
             }
             await CartItem.deleteMany({ userId });
-            console.log("Cleared cart for user", userId);
+       
             res.status(200).json({ message: "Cart cleared" });
         } catch (error: any) {
             res.status(500).json({ errorMessage: error?.message || "Failed to clear cart" });

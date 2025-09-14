@@ -64,7 +64,6 @@ const Checkout = () => {
 
         const orderId = await RazorPayPaymentVerification({ amount: subtotal, currency: "INR" });
 
-        console.log(subtotal);
 
         const options = {
             key: config.razorpayKey,
@@ -89,7 +88,6 @@ const Checkout = () => {
                 }
 
                 if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-                    console.log("payement id's missing");
                     return;
                 }
 
@@ -101,8 +99,8 @@ const Checkout = () => {
                     body: JSON.stringify({ razorpay_payment_id, razorpay_order_id, razorpay_signature })
                 });
                 if (res.ok) {
-                    console.log("payment verified done");
                     setPaymentVerifiedAndDone(true);
+                    if (!userData.id) return;
                     await handleSavePlacedOrder(orderDetailsData);
                     clearCart();
                     localStorage.removeItem("cart-storage");
@@ -145,7 +143,7 @@ const Checkout = () => {
             if (res.ok) {
                 const result = await res.json();
                 await clearServerCart(userData.id);
-                console.log("Order saved successfully:", result);
+              
                 return;
             } else {
                 const errorData = await res.text();

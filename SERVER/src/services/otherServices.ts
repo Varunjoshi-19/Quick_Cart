@@ -16,7 +16,7 @@ class OtherServices {
 
     async paymentVerification(req: Request, res: Response) {
         const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
-        console.log(req.body);
+
         const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET_KEY!);
         hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
         const generated_signature = hmac.digest("hex");
@@ -33,7 +33,7 @@ class OtherServices {
     async orderPayment(req: Request, res: Response) {
 
         const { amount, currency } = req.body;
-        console.log(amount, currency);
+  
 
         const options = {
             amount: amount * 100,
@@ -43,7 +43,7 @@ class OtherServices {
 
         try {
             const order = await this.#razorpay.orders.create(options);
-            console.log("order id", order.id);
+           
             res.json(order.id);
         }
         catch (error) {
@@ -54,7 +54,7 @@ class OtherServices {
 
     async saveOrder(req: Request, res: Response) {
         const { userId, orderId, paymentId, userName, productName, totalAmount, address } = req.body;
-       console.log(req.body);
+
         if (!userId || !orderId || !paymentId || !userName || !productName || !totalAmount || !address) {
             res.status(400).json({ errorMessage: "Missing required order details" });
             return;
@@ -75,7 +75,7 @@ class OtherServices {
                 }
             });
 
-            console.log(newOrder);
+   
             if (!newOrder) {
                 res.status(500).json({ errorMessage: "Failed to save order" });
                 return;

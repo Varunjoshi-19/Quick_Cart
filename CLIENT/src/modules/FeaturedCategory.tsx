@@ -1,7 +1,10 @@
 import { Images } from "@/scripts/helper";
 import styles from "@/styles/featuredCategory.module.css";
+import { useNavigate } from "react-router-dom";
 
 function FeaturedCategory() {
+
+    const navigate = useNavigate();
     return (
 
         <div className={styles.categoryContainer}>
@@ -11,7 +14,7 @@ function FeaturedCategory() {
                 {
 
                     Images.map(each => (
-                        <div className={styles.eachCategory}>
+                        <div  onClick={() => navigate(`/products/category/${each.name.toUpperCase()}`)} className={styles.eachCategory}>
                             <div id={styles.iconContainer} style={{ background: each.backgroundColor }}>
                                 <img src={each.src} alt=""
                                     style={{ width: "100%", objectFit: "contain" }}

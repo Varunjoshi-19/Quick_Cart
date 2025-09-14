@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { AuthUserDataProps } from "../interface";
 import type { CartStoreState, CartItem } from "../interface";
 import { fetchUserCart } from "@/services/cart";
@@ -8,6 +7,7 @@ import { fetchUserCart } from "@/services/cart";
 export const useAuthStore = create<AuthUserDataProps>((set) => ({
   
     userData: null,
+    
     setUserData: (data: any) => set(() => ({
         userData: data
     })),
@@ -16,6 +16,7 @@ export const useAuthStore = create<AuthUserDataProps>((set) => ({
         
         return { userData: null };
     })
+
 }));
 
 export const useCartStore = create<CartStoreState>((set, get) => ({

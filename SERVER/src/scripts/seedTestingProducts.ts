@@ -289,7 +289,7 @@ async function seedCategory(category: CategoryKey) {
             // small delay to avoid overloading
             await new Promise(r => setTimeout(r, 25));
         }
-        console.log(`Seeded ${category}: ${files.length} files processed.`);
+
     } catch (err) {
         console.error(`Failed to seed ${category}:`, err);
     }

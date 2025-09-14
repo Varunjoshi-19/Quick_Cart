@@ -145,18 +145,27 @@ class userServices {
         if (!email || !name || !url || !provider || !providerId) {
             return res.status(404).json({ message: "fields are missing!" });
         }
+         
+        
 
 
         const prisma = dbConnections.getPrismaConnection();
         const alreadyUser = await prisma.user.findUnique({
             where: {
-                email: email
+                email: email,
             }
         });
 
+ 
+       if(alreadyUser?.provider == "email") { 
+        return res.status(404).json({ message: "User email already exists!" });
+       }
+
+
         if (alreadyUser) {
-            return res.status(200).json({ message: "logged in successfully!" });
+            return res.status(200).json({ message: "logged in successfully!" , user : alreadyUser });
         }
+
         const imageId = randomUUID();
         const userData: UserProps = {
             name: name,
@@ -174,6 +183,7 @@ class userServices {
             const user = await prisma.user.create({
                 data: userData
             });
+
             if (!user) return res.status(404).json({ message: "failed to sign up  as google!" });
 
 

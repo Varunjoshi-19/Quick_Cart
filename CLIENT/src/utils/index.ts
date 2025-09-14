@@ -26,8 +26,6 @@ export async function fetchAllCountries() {
             ALL_COUNTRIES = result.data;
             return result.data;
         }
-        if (!response.ok) console.log(result);
-
     }
     catch (err) {
         console.log(err);
@@ -44,7 +42,6 @@ export function searchForSpecificCountry(country: string) {
     const regex = new RegExp(escapedCountry, "i");
 
     const matchedCountries = ALL_COUNTRIES.filter(c => regex.test(c.country));
-    console.log(matchedCountries);
     return matchedCountries;
 }
 

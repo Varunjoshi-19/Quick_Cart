@@ -9,7 +9,6 @@ import { OFFERS, OFFERS2 } from "@/scripts/helper";
 function DashBoard() {
 
     const { userData } = useAuthStore();
-    console.log("this is the user data", userData);
     return (
         <main className={styles.dashBoardContainer}>
 

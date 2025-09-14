@@ -83,7 +83,10 @@ const SignIn: React.FC = () => {
         if (!success) return;
 
         const result = await SaveGoogleCredentails(data);
-        if (!result.success) return;
+        if (!result.success) {
+            setBusy(false);
+            return;
+        }
 
         const dataUser = result.data;
         localStorage.setItem("user-data", JSON.stringify(dataUser));

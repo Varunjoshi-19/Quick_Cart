@@ -13,6 +13,7 @@ import Orders from "./pages/Orders";
 import MyList from "./pages/MyList";
 import ProtectedRoutes from "./router/ProtectedRoutes";
 import Checkout from "./pages/checkout";
+import SearchPage from "./pages/search";
 const App = () => {
 
   const { userData } = useAuthStore();
@@ -25,6 +26,7 @@ const App = () => {
       <Routes>
         <Route path="/signin" element={userData ? <Navigate to="/" /> : <SignIn />} />
         <Route path="/signup" element={userData ? <Navigate to="/" /> : <Signup />} />
+          <Route path="/search" element={<SearchPage />} />
 
         <Route path="/" element={<AppLayout />}>
 
@@ -38,6 +40,7 @@ const App = () => {
             <Route path="orders" element={<Orders />} />
             <Route path="my-account" element={<MyAccount />} />
           </Route>
+
 
 
           <Route path="/product/:id" element={<SingleProduct />} />
