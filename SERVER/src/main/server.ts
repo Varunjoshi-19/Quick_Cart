@@ -25,6 +25,10 @@ async function startServer() {
     }));
 
 
+    app.get("/health", (req, res) => {
+        res.status(200).json({ message: "Server is up and running", status: "Active ✅" });
+    })
+
     app.use("/api", otherRoute);
     app.use("/user", userRoute);
     app.use("/products", productRoute);
